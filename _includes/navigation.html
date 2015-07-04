@@ -50,6 +50,7 @@
 				<li><a href="{{ site.url }}/tags/">All Tags</a></li>
 			</ul>
 		</li>
+        <!-- Kasper: replace by site.data.index
 		{% for link in site.data.navigation %}
 	    {% if link.url contains 'http' %}
 	        {% assign domain = '' %}
@@ -57,6 +58,9 @@
 	        {% assign domain = site.url %}
 	    {% endif %}
 	    <li><a href="{{ domain }}{{ link.url }}" {% if link.url contains 'http' %}target="_blank"{% endif %}>{{ link.title }}</a></li>
-	  {% endfor %}
+	    {% endfor %}
+        -->
+
+        {% include docs_contents_navigation.html %}
 	</ul><!-- /.dl-menu -->
 </nav><!-- /.dl-menuwrapper -->

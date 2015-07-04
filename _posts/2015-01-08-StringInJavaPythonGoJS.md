@@ -34,7 +34,9 @@ image:
 // Java
 String demoA = null;
 String demoB = "";
+{% endhighlight %}
 
+{% highlight python %}
 # python
 # Prefer using single quote for char
 demoA = 'It\'s a demo A.'
@@ -42,7 +44,7 @@ demoA = 'It\'s a demo A.'
 demoB = "It\'s a demo B."
 chinese = "中文"   #utf-8
 uchinese = u"中文" #unicode
-                                             
+
 >>> demoC = """ It's a
 ... demo
 ... C
@@ -54,33 +56,46 @@ uchinese = u"中文" #unicode
 >>> type(demoA)
 <type 'str'>
 >>> del demoC
+{% endhighlight %}
 
-# Operations
->>> "a" * 3
-'aaa'
-
+{% highlight go %}
 // Go
 var demoA string;
 demoB := "It's a demoB"
+{% endhighlight %}
 
+{% highlight javascript %}
 // Javascript
 var demoStr = "demo string"
+var demoStr1 = 'demo string'  // signle quote
+var demoStr = "demo string"   // double quote
+var demoChar = 'a'   // no char type in JS, use sigle character in string to present char
+var demoPath = "\/home\/kasper"  // escape
+
+var demoUnicode = '\u4e2d\u6587';  // unicode '中文'
+
+ES6 - multi-line - `...`
+` This is
+  multi-line
+  string    `
 {% endhighlight %}
 
 # Operations #
 
 {% highlight java %}
-### encoding ###
+=== encoding ===
 // java
 System.getProperties().getProperty("file.encoding")
+{% endhighlight %}
 
+{% highlight python %}
 # python
 sys.getdefaultencoding()
 sys.setdefaultencoding("utf-8")
 encode(arg1) # encode to specific encoding arg1, e.g. "utf-8", "gb2312"
 decode() # -> unicode
 
-### others ###
+### basic operations ###
 # python
 "a" + "b", "-".join(["a", "b", "c"])
 "a-b-c".split("-"), "a\nb\nc".splitlines() or splitlines(True)
@@ -89,6 +104,12 @@ lower(), upper()
 strip(), lstrip(), rstrip()
 replace(), find
 
+>>> "a" * 3
+'aaa'
+
+{% endhighlight %}
+
+{% highlight go %}
 // go
 str1 + str2 // string concatination
 len(s)        // get length of string
@@ -96,13 +117,19 @@ str1[i]       // get char from string
 for i, ch := range str {
 ...
 }
+{% endhighlight %}
 
+{% highlight javascript %}
 // Javascript
 str1 = '\u0041' // or double quota "\u0041"
 str1 += str2;
 str.length  // string length is attribute. In Java, length() is method
 str.toUpperCase()
 str1 === str2
+str2[0] // 'H'
+str2.indexOf('World')  // 6
+str2.substring(0, 5);  // Hello, range not include 5
+str2.substring(6);  // World
 {% endhighlight %}
 
 # format #
@@ -110,6 +137,9 @@ str1 === str2
 {% highlight java %}
 // java
 
+{% endhighlight %}
+
+{% highlight python %}
 # python
 # support as format in C
 # %[(key)][flags(-(left alignment)/+/#(i.e. #c, #X) etc)][width][.precision]typecode(d/f/s/x etc)
@@ -122,7 +152,10 @@ str1 === str2
 
 >>>"test {demo}".format(demo="Kasper")
 'test Kasper'
-   
+
+{% endhighlight %}
+
+{% highlight go %}
 // go
 // %d, %f, %s, %x, %c
 fmt.Printf("The length of \"%s\" is %d \n", str, len(str))
@@ -131,4 +164,3 @@ fmt.Printf("The length of \"%s\" is %d \n", str, len(str))
 
 
 hex(id(x)) - return obj id - memory address
-

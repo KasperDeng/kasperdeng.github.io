@@ -23,11 +23,13 @@ image:
    - small type casts to large type is safe
    - large -> small causes tuncations, only keeps the data in low address. The situation depends on what saves in low address (big-endian/little-endian)
 
-~~~
+{% highlight java %}
 /*** java ***/
 double doubleDemo = 0.1d;
 int intDemo = (int) doubleDemo ;
+{% endhighlight %}
 
+{% highlight python %}
 ### python ###
 >>> type(str(123))
 <type 'str'>
@@ -38,7 +40,9 @@ int intDemo = (int) doubleDemo ;
 
 # suuport string ~ container(list, tuple, dict, set) conversion
 >>> str([0, 1, 2]), eval("[0, 1, 2]")
+{% endhighlight %}
 
+{% highlight go %}
 /*** go ***/
 var int32Demo int32 = 12345
 var int64Demo int64 = int64(int32Demo)
@@ -50,7 +54,7 @@ case []byte:
 case int:
 default:
 }
-~~~
+{% endhighlight %}
 
 # Primitive #
 * Java:
@@ -65,12 +69,12 @@ default:
    - dict
    - set, frozenset
 
-~~~
+{% highlight python %}
 >>> map(bool, [None, 0, "", u"", list(), tuple(), dict(), set(), frozenset()])
 [False, False, False, False, False, False, False, False, False]
 >>> int(True), int(False)
 (1, 0)
-~~~
+{% endhighlight %}
 
 * Go:
    - nil
@@ -83,15 +87,15 @@ default:
    - error
    - compound type: array, slice, map, chan, struct, pointer, interface
 
-~~~
+{% highlight go %}
 demoInt := 2
 if demoInt {
         fmt.Println("int value can be used by if")
 }
 error output: non-bool demoInt (type int) used as if condition
-~~~
+{% endhighlight %}
 
-* Javascript: 
+* Javascript:
    - primitive type
       - undefined: undefined
       - null: null - can be treated as a specifal value of Object
@@ -102,12 +106,12 @@ error output: non-bool demoInt (type int) used as if condition
       - Object
          + wrapper: Number, Boolean, String
 
-~~~
+{% highlight javascript %}
 var n = 1, b = true, s = "test"
 var Num = new Number(n);
 var Boo = new Boolean(b);
 var Str = new String(s);
-~~~
+{% endhighlight %}
 
    - check by typeof()
    - Object type (wrapper for primitive) has methods, except null and undefined

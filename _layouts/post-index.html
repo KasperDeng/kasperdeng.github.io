@@ -27,15 +27,26 @@
   </div><!-- /.header-title -->
 </div><!-- /.entry-header -->
 
-<!-- {% include docs_contents.html %} -->
 
-<div id="main" role="main">
+<div class="grid">
+  <div class="unit four-fifths">
+  <article>
   {{ content }}
+  </article>
+  </div>
+
+{% include docs_contents.html %}
+
 </div><!-- /#main -->
 
 <div class="footer-wrapper">
-  <footer role="contentinfo">
-    {% include footer.html %}
+  <!-- <footer role="contentinfo"> -->
+  <footer>
+    <div class="grid">
+       <div class="center-on-mobiles">
+          {% include footer.html %}
+       </div>
+    </div>
   </footer>
 </div><!-- /.footer-wrapper -->
 

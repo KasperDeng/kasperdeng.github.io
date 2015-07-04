@@ -1,8 +1,16 @@
 <div class="unit one-fifth hide-on-mobiles">
   <aside>
-    {% for section in site.data["index"] %}
-    <h4>{{ section.title }}</h4>
-    {% include docs_ul.html items=section.docs %}
+    {% for link in site.data.index %}
+    <h4>{{ link.title }}</h4>
+    {% include docs_ul.html items=link.docs %}
+    {% if link.url %}
+      {% if link.url contains 'http' %}
+          {% assign domain = '' %}
+          {% else %}
+          {% assign domain = site.url %}
+      {% endif %} 
+      <li><a href="{{ domain }}{{ link.url }}" {% if link.url contains 'http' %}target="_blank"{% endif %}>{{ link.title }}</a></li>
+    {% endif %}
     {% endfor %}
   </aside>
 </div>

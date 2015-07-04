@@ -1,6 +1,6 @@
 - title: golang 
   docs:
-      - /programming/golang/diameter/
+  - /programming/golang/
 
 - title: go-overview
   url: /programming/golang/go-overview.html

@@ -1,0 +1,40 @@
+#ericssonbg1 {
+	/*background-image:url(images/background.jpg);*/
+	background-color: #722160;
+	background: -webkit-linear-gradient(top,#2564a7, #59246a);
+	background: -moz-linear-gradient(top,#2564a7, #59246a);
+	background: -o-linear-gradient(top,#2564a7, #59246a);
+	background: -ms-linear-gradient(top,#2564a7, #59246a);
+	background: linear-gradient(top,#2564a7, #59246a);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2564a7', endColorstr='#59246a');
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#2564a7', endColorstr='#59246a')";
+	background-size:100% 100%; 
+	background-repeat:no-repeat; 
+	background-color:#fff;
+}
+
+#ericsson_div1 {
+	color: #fff;
+	font-size: 24px;
+	text-align:center; 
+	width: 100%; 
+	display:block; 
+	padding:2px 0px; 
+	font-weight:normal; 
+	text-shadow:none;
+}	
+
+#ericsson_div2 {
+	color: #fff;
+	font-size: 16px;
+	width: 100%; 
+	display:block; 
+	padding:2px 0px; 
+	font-weight:normal; 
+	text-shadow:none;
+	margin-top:12px;
+}
+
+#ericsson_img {
+	margin-top: 12px;
+}

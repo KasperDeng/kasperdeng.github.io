@@ -23,10 +23,6 @@ encoding: utf-8
 
 --
 
-### Solve the Problem 
-
---
-
 ### Advantage
 * Developer only focus on the react component and its state maintenance
 * DOM structure is managed by React and in efficiently update the changed component

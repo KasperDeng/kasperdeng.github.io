@@ -1,0 +1,166 @@
+---
+layout: post
+title: zabbix
+description: "zabbix"
+tags: [zabbix, devops]
+image:
+  background: triangular.png
+---
+
+# Introduction #
+
+# Installation #
+* 方式
+   - 可以选择操作系统的包管理器(支持RedHat7/CentOS7 yum 和 Debian7&8 or Ubuntu 14.04LTS&16.04LTS的apt)，通过官方的repository进行安装。
+   - 通过源码安装。
+   - 对于3.0以上版本，更提供了docker，更加的便捷。
+* [包管理器方式安装](https://www.zabbix.com/documentation/3.2/manual/installation/install_from_packages)
+  - RedHat/CentOS的包依赖：
+    + fping, iksemel, libssh2 packages
+      - zabbix官方提供了相关的包，在http://repo.zabbix.com/non-supported/rhel/7/x86_64/，只针对x64。
+    + 安装过程中还发现依赖`php-bcmath`和`php-mbstring`，具体小版本，可以根据yum的依赖检查的信息在http://rpm.pbone.net/搜索下载
+    + 以上的包最方便的方式还是自己建yum repo
+    
+    ```
+    copy all dependent rpms to ~/repo/packages
+    shell>yum install -y createrepo
+    shell>createrepo ~/repo/packages
+    shell>create zabbix.repo in /etc/yum.repo.d/
+    ```
+
+    ```
+    [ece-zabbix]
+    name=ece-zabbix
+    baseurl=file:///root/repo/
+    enabled=1
+    gpgcheck=0
+    metadata_expire=0
+    cost=500
+    ```
+  - PHP版本：zabbix3.0要求PHP 5.4以上版本，不支持PHP7. RedHat6/CentOS6 官方repo只有php5.3.3，需要利用三方源升级到php5.4。
+    + RedHat6/CentOS6升级php
+      - 下载相关的php包（看下面的例子）：https://repo.webtatic.com/yum/el6/x86_64/ 并用createrepo创建本地的php repo
+      ```
+      yum erase php php-bcmath php-cli php-common php-gd php-mbstring php-mysql php-pdo php-xml
+      yum install php56w php56w-bcmath php56w-cli php56w-common php56w-gd php56w-mbstring php56w-mysql php56w-pdo php56w-xml
+      ```
+  - 数据库
+    + Zabbix 支持使用MySQL和Postgres
+    + MySQL-server最好安装5.6以上版本，其他版本性能偏低。
+  - 启动服务：出于安全考虑，最好创建`zabbix`用户和用户组，用来启动server/agent的服务
+    + `systemctl start zabbix-server`
+    + `systemctl start httpd`
+
+* [源码安装](https://www.zabbix.com/documentation/3.2/manual/installation/install)，基于RedHat
+  - 依赖工具：yum install -7 gcc.x686_64 make.x686_64 mysql-devel.x686_64 libxml2-devel.x686_64 net-snmp-devel.x686_64 libcurl-devel.x686_64
+  - php version
+    + zabbix 3.0: > PHP5.4
+    + zabbix 2.2: PHP3
+  - PHP Web Frontend install
+    + check whether selinux blocks apache/httpd access
+      - `getenforce`/`setenforce 0/1`
+      - `getsebool <flagName> or -a`/`sesebool -P <flagName> <value>`
+      - sestatus
+    + check apache/httpd error log `/var/log/httpd/error_log`
+      - set `LogLevel` to `debug` in `/etc/httpd/conf/httpd.conf`
+  - reference: http://www.hi-linux.com/2016/03/29/CentOS%206%E4%B8%8B%E5%AE%89%E8%A3%85Zabbix%203.0/
+  - 源码安装需要自己封一套脚本在`/etc/init.d/`，可以参考现有的zabbix-server & zabbix-agent的rpm包里面的
+
+# configuration #
+* zabbix server
+  - config location
+    + Package Installation: `/etc/zabbix/zabbix_server.conf`
+    + Source Installation: `/usr/local/etc/zabbix_server.conf` and `/usr/local/etc/zabbix_agentd.conf` 
+  - 主要配置数据库的host，数据库名称，用户名，密码
+* zabbix frontend
+  - 主要是用apache，配置在`/etc/httpd/conf.d/zabbix.conf` 
+  - 配置下时区就好了。
+* zabbix agentd
+  - 没什么好说的，奉行简单化风格，对监控节点尽量做到了无侵入，而且已经支持基本的metrix的收集了。
+  - 配好zabbix server的地址。
+  - 创建zabbix用户启动agent。
+  ```
+  groupadd zabbix
+  useradd -g zabbix zabbix
+  ```
+* theme
+* screen
+
+# log #
+* server/agent logs location
+  - Package Installation: `/var/log/zabbix/`
+  - Source Installation: default in `/tmp/zabbix_server.log`, value is set in `/usr/local/etc/zabbix_server.conf`
+* apache log in `/var/log/httpd/`
+
+# 坑 #
+* zabbix 3.0，官方文档只给出了RedHat7/CentOS7的官方respository。虽然有针对RedHat5/6的repo，但是好像已经deprecated，实际上里面缺少了zabbix-server，zabbix-web。
+  - [RHEL7 repo](http://repo.zabbix.com/zabbix/3.0/rhel/7/x86_64/)
+  - [RHEL6 repo](http://repo.zabbix.com/zabbix/3.0/rhel/6/x86_64/)
+  - [RHEL5 repo](http://repo.zabbix.com/zabbix/3.0/rhel/5/x86_64/)
+  - 针对RedHat6/CentOS X64，有github project做了相关的rpm包
+    + https://github.com/zabbixcn/zabbix3.0-rpm
+* php相关的依赖包比较多，大部分在RedHat的官方repo会有，除了`php_bcmath`和`php_mbstring`。自行搜索下载的时候注意版本，php所有相关的包都是要align在统一的小版本上的，
+  比如`5.3.3-46.el6_7.1`，如果你下载的不是一个版本的话，yum安装的时候会出现`Dependency Resolution`问题。
+* mysql数据库用简单的mysql server就好了。曾尝试用mysql cluster，遇到不少问题。
+  - 官方的sql要求用的engine是innodb，若狗所用的mysql cluster是NDBCLUSTER做storage engine的话需要打开innodb support，才能顺利导入zabbix的schema, data ...
+  - zabbix2.2 web setup的时候要测试和mysql的连接，但用mysql cluster的话死活连不过去，而且不能next去下一步。但3.0的版本只需要填数据库信息，不需要测试连接性，关键能next啊，与数据连接有问题的话后面再改配置呗。
+* zabbix dashboard显示"zabbix server is not running"
+  - 原因: blocked by SELINUX
+
+  ```
+  shell>tail -f /var/log/audit/audit.log
+  r:zabbix_agent_port_t:s0 tclass=tcp_socket
+  type=SYSCALL msg=audit(1474187313.154:2439): arch=c000003e syscall=42 success=no exit=-13 a0=c a1=7f800b6ec850 a2=1c a3=ff00 items=0 ppid=2048 pid=2057 auid=500 uid=48 gid=48 euid=48 suid=48 fsuid=48 egid=48 sgid=48 fsgid=48 tty=  (none) ses=2 comm="httpd" exe="/usr/sbin/httpd" subj=unconfined_u:system_r:httpd_t:s0 key=(null)
+  type=AVC msg=audit(1474187313.154:2440): avc:  denied  { name_connect } for  pid=2057 comm="httpd" dest=10050 scontext=unconfined_u:system_r:httpd_t:s0 tcontext=system_u:object_r:zabbix_agent_port_t:s0 tclass=tcp_socket
+  
+  shell> /usr/sbin/getsebool -a | grep httpd
+  allow_httpd_anon_write --> off
+  allow_httpd_mod_auth_ntlm_winbind --> off
+  allow_httpd_mod_auth_pam --> off
+  allow_httpd_sys_script_anon_write --> off
+  httpd_builtin_scripting --> on
+  httpd_can_check_spam --> off
+  httpd_can_network_connect --> off
+  httpd_can_network_connect_cobbler --> off
+  httpd_can_network_connect_db --> off
+  httpd_can_network_memcache --> off
+  httpd_can_network_relay --> off
+  httpd_can_sendmail --> off
+  httpd_dbus_avahi --> on
+  httpd_dbus_sssd --> off
+  httpd_enable_cgi --> on
+  httpd_enable_ftp_server --> off
+  httpd_enable_homedirs --> off
+  httpd_execmem --> off
+  httpd_manage_ipa --> off
+  httpd_read_user_content --> off
+  httpd_run_preupgrade --> off
+  httpd_run_stickshift --> off
+  httpd_serve_cobbler_files --> off
+  httpd_setrlimit --> off
+  httpd_ssi_exec --> off
+  httpd_tmp_exec --> off
+  httpd_tty_comm --> on
+  httpd_unified --> on
+  httpd_use_cifs --> off
+  httpd_use_fusefs --> off
+  httpd_use_gpg --> off
+  httpd_use_nfs --> off
+  httpd_use_openstack --> off
+  httpd_verify_dns --> off
+  
+  shell>setsebool -P httpd_can_network_connect on 
+  ```
+
+  ![zabbix-server-not-running](https://raw.githubusercontent.com/KasperDeng/kasperdeng.github.io/master/images/zabbix/zabbix-server-not-running.jpg)
+
+* Web frontend blocked by `403: Permission Denied`
+  - check selinux
+    + check `/var/log/audit/audit.log`
+    + change `SELINUX=enforcing` to `SELINUX=disable` in `/etc/selinux/config` and reboot
+    + `setenforce 0` and `getenforce` or `sestatus` to get current mode status
+    + check the security context of PHP file. The type is `httpd_user_content_t`
+      ```
+      ls -Z /var/www/html/zabbix
+      ```
+    + check the owernship and file mode of your PHP file content. apache needs execution permission.

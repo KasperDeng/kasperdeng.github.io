@@ -8,7 +8,7 @@
            {% assign domain = site.url %}
        {% endif %} 
        <li><a href="{{ domain }}{{ link.url }}" {% if link.url contains 'http' %}target="_blank"{% endif %}>{{ link.url.urlTitle }}</a></li>
-       <br>
+       <span></span>>
      {% endif %} 
   {% endfor %}
 </div>

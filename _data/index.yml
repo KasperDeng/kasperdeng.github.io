@@ -6,8 +6,10 @@
   docs:
   - /_posts/
   url: /programming/golang/go-overview.html
+  - urlTitle: golang overview
 
 - title: react
   docs:
   - /_posts/
   url: /programming/javascript/react-native-overview.html
+  - urlTitle: react native overview

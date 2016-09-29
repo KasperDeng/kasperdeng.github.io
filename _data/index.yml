@@ -2,8 +2,12 @@
   docs:
   - /_posts/
 
-- title: go-overview
+- title: golang
+  docs:
+  - /_posts/
   url: /programming/golang/go-overview.html
 
 - title: react
+  docs:
+  - /_posts/
   url: /programming/javascript/react-native-overview.html

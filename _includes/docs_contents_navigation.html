@@ -1,6 +1,8 @@
 <div class="unit one-fifth hide-on-mobiles">
   {% for link in site.data.index %}
-     {% include docs_ul.html items=link.docs %}
+     {% if link.docs %}
+       {% include docs_ul.html items=link.docs %}
+     {% endif %}
      {% if link.url %}
        {% if link.url contains 'http' %}
            {% assign domain = '' %}

@@ -2,10 +2,8 @@
   docs:
   - /_posts/
 
-- title: golang
+- title: golang-overview
   url: /programming/golang/go-overview.html
-  - urlTitle: golang overview
 
-- title: react
+- title: react-overview
   url: /programming/javascript/react-native-overview.html
-  - urlTitle: react native overview

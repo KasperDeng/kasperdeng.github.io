@@ -56,8 +56,8 @@ paginate: 5
 rdiscount:
   extensions: []
 
-redcarpet:
-  extensions: [no_fenced_code_blocks]
+redcarpet: # REF: https://george-hawkins.github.io/basic-gfm-jekyll/redcarpet-extensions.html
+  extensions: ["no_fenced_code_blocks"]
 
 kramdown:
   auto_ids: true

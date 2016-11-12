@@ -52,11 +52,21 @@ permalink:   /:categories/:title/
 # Amount of post to show on home page
 paginate: 5
 
+# Markdown Processors
+rdiscount:
+  extensions: []
+
+redcarpet:
+  extensions: []
+
 kramdown:
   auto_ids: true
   footnote_nr: 1
   entity_output: as_char
   toc_levels: 1..6
+  smart_quotes: lsquo,rsquo,ldquo,rdquo
+  input: GFM
+  hard_wrap: false
   use_coderay: true
 
   coderay:

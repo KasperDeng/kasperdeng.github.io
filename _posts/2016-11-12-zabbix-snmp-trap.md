@@ -29,7 +29,7 @@ image:
 * 安装：依赖包
    - 这里以RedHat 7/CentOS 7为例子，记录需要用到的工具以及相关的依赖包（以下有链接的一般表示在系统默认的软件包管理器里面缺失的，需要搜索下载安装）
 
-{% highlight bash %}
+```
 net-snmp.x86_64 (for snmptrapd)
 
 [snmptt](http://rpm.pbone.net/index.php3/stat/4/idpl/27126799/dir/redhat_el_7/com/snmptt-1.4-0.9.beta2.el7.noarch.rpm.html)
@@ -42,8 +42,7 @@ net-snmp.x86_64 (for snmptrapd)
         \--- perl-Digest-SHA1.x86_64
 
 net-snmp-utils.x86_64 (for snmptrap)
-
-{% endhighlight %}
+```
 
 # 配置snmptrapd #
 * `/etc/snmp/snmptrapd`

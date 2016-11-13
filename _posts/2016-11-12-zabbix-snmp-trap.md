@@ -29,7 +29,7 @@ image:
 * 安装：依赖包
    - 这里以RedHat 7/CentOS 7为例子，记录需要用到的工具以及相关的依赖包（以下有链接的一般表示在系统默认的软件包管理器里面缺失的，需要搜索下载安装）
 
-{% highlight bash %}
+```shell
 net-snmp.x86_64 (for snmptrapd)
 
 [snmptt](http://rpm.pbone.net/index.php3/stat/4/idpl/27126799/dir/redhat_el_7/com/snmptt-1.4-0.9.beta2.el7.noarch.rpm.html)
@@ -42,7 +42,7 @@ net-snmp.x86_64 (for snmptrapd)
         \--- perl-Digest-SHA1.x86_64
 
 net-snmp-utils.x86_64 (for snmptrap)
-{% endhighlight %}
+```
 
 # 配置snmptrapd #
 * `/etc/snmp/snmptrapd`
@@ -96,7 +96,7 @@ net-snmp-utils.x86_64 (for snmptrap)
   - 如果发现SELINUX所block的问题，需要用到`audit2allow`去解决，参照以下例子。
   - REF: https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/SELinux_Users_and_Administrators_Guide/sect-Security-Enhanced_Linux-Troubleshooting-Fixing_Problems.html#sect-Security-Enhanced_Linux-Fixing_Problems-Allowing_Access_audit2allow
 
-{% highlight bash %}
+```shell
 shell>tail -f /var/log/audit/audit.log
 type=SYSCALL msg=audit(1478754989.834:4148): arch=c000003e syscall=2 success=no exit=-13 a0=25de540 a1=0 a2=7ffe07dedda0 a3=0 items=0 ppid=15596 pid=15626 auid=4294967295 uid=995 gid=992 euid=995 suid=995 fsuid=995 egid=992 sgid=992 fsgid=992 tty=(none) ses=4294967295 comm="zabbix_server" exe="/usr/sbin/zabbix_server_mysql" subj=system_u:system_r:zabbix_t:s0 key=(null)
 type=AVC msg=audit(1478754990.835:4149): avc:  denied  { read } for  pid=15626 comm="zabbix_server" name="snmptt.log" dev="xvda1" ino=75528756 scontext=system_u:system_r:zabbix_t:s0 tcontext=system_u:object_r:snmpd_log_t:s0 tclass=file"
@@ -114,7 +114,7 @@ total 8
 -rw-r--r--. 1 root root 172 Nov 10 05:38 zabbixsemanage.te
 
 shell> semodule -i zabbixsemanage.pp
-{% endhighlight %}
+```
 
 * 网络上的安全问题
   - 在云上，注意安全组没有阻止了对应SNMP的端口的访问。

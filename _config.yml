@@ -37,8 +37,8 @@ bing_verify:
 # http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 timezone:    America/New_York
 future:      true
-highlighter: pygments
-#highlighter: rouge
+#highlighter: pygments
+highlighter: rouge
 markdown:    kramdown
 gems:
   - jekyll-sitemap
@@ -57,7 +57,7 @@ rdiscount:
   extensions: []
 
 redcarpet: # REF: https://george-hawkins.github.io/basic-gfm-jekyll/redcarpet-extensions.html
-  extensions: ["no_fenced_code_blocks"]
+  extensions: []
 
 kramdown:
   auto_ids: true

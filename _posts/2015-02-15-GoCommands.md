@@ -34,8 +34,8 @@ image:
 # go list #
 - go list -json package: print the package strcuture in json format
 - text/template syntax
-   * go list -f {{.ImportPath}} package
-   * go list -f {{.S.F}} package
+   * go list -f \{\{.ImportPath\}\} package
+   * go list -f \{\{.S.F\}\} package
 
 # go test #
 - `-i`: install the test dependencies, but not compile and run it

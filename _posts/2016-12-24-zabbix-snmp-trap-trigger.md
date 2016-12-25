@@ -7,7 +7,7 @@ image:
   background: triangular.png
 ---
 
-# Zabbix SNMP Trap Trigger
+# Zabbix Trigger
 
 * Zabbix 提供了trigger（触发器）的功能，用于检测某些事件的发生，从而触发用户通知。
 * 对于SNMP Trap，可以充分利用trigger的触发机制，定制需要的用户警告与通知。

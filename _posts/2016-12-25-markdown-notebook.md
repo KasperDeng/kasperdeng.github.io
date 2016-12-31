@@ -34,26 +34,33 @@ image:
 * JS版，基于Electron (atom shell)
 > Electron的缺点就是启动慢，但启动了后也不见得慢，笔记软件，也就启动一次而已啦。但优点突出，尤其在样式渲染，所以Electron desktop app一般都是全平台的，而且贴近Mac应用的酷炫。
 
-  - [atom](https://atom.io): 程序员的编辑器，原生对markdown有很好的支持。作为markdown编辑器，还算是不错的选择。
-  但是**缺点**也是明显的，因为是Electron应用，启动慢，而且窗口切换(windows：alt + tag)后，光标也要等好几秒才能响应（这感觉是个问题，其他Electron也没见这样子。作为Atom shell的鼻祖，这个是否可以改善一下。）
-  要想成为程序员的笔记本软件，只要稍微改造一下，安装以下插件。
-     + [markdown-preview-enhanced](https://github.com/shd101wyy/markdown-preview-enhanced): 对markdown preview提供更加强大的功能，比如，scroll sync, TOC, MathJax/KaTex, export PDF, HTML, JPG, Flowchart/Sequence diagram 以及preview css自定义 等等
-     + [maximize-panes](https://atom.io/packages/maximize-panes): 最大化preivew panel，作为笔记的阅读模式。
-     + [vim-mode-plus](https://atom.io/packages/vim-mode-plus)
-     + [vim-mode-plus-ex-mode](https://atom.io/packages/vim-mode-plus-ex-mode)
+  - [atom](https://atom.io)
+     + 程序员的编辑器，原生对markdown有很好的支持。作为markdown编辑器，还算是不错的选择。
+     + 但是**缺点**也是明显的
+        - Electron应用，启动慢
+        - 窗口切换(windows：alt + tag)后，光标也要等好几秒才能响应（感觉是个问题，其他Electron也没见这样子。作为Atom shell的鼻祖，这个是否可以改善一下。） （确认了上面的问题，是因为每次窗口切换，atom内置的git会refresh index. 问题跟踪跟workaround在https://github.com/atom/atom/issues/9544。就是在init.coffee里面加了一段禁止git refresh index，配置了手工refresh的keymap。）
+     +  要想成为程序员的笔记本软件，只要稍微改造一下，安装以下插件。
+        - [markdown-preview-enhanced](https://github.com/shd101wyy/markdown-preview-enhanced): 对markdown preview提供更加强大的功能，比如，scroll sync, TOC, MathJax/KaTex, export PDF, HTML, JPG, Flowchart/Sequence diagram 以及preview css自定义 等等
+        - [maximize-panes](https://atom.io/packages/maximize-panes): 最大化preivew panel，作为笔记的阅读模式。
+        - [vim-mode-plus](https://atom.io/packages/vim-mode-plus)
+        - [vim-mode-plus-ex-mode](https://atom.io/packages/vim-mode-plus-ex-mode)
 
   - [leanote](https://github.com/leanote/leanote): 中文叫*蚂蚁笔记*
-     * 开源，国人开发，代码注释都是中文，亲切？
-     * 全平台，包括手机端的IOS和安卓
-     * 支持VIM和EMACS模式
+     * 开源，国人开发
+        + 码注释都是中文，亲切？
+     * 全平台，包括手机端
+     +       - 和安卓
+        * 支持VIM
+        - ACS模式
      * [Leanote Desktop APP](https://github.com/leanote/desktop-app)是基于Electron开发的，开发，调试都很方便。
-     * 用了NEDB做存储的，包含了title tags date categoris等meta。所以导入导出都需要做格式的转换，这些都由插件来完成。
-        - 自身带了从Evernote和Leannote导入的插件。
+     +     * 用了NEDB做存储的，包含了title tags date categoris等meta。所以导入导出都需要做格式的转换，这些都由插件来完成。
+          -- 自身带了从Evernote和Leannote导入的插件。
+          - 确认了上面的问题，是因为每次窗口切换，atom内置的git会refresh index. 问题跟踪跟workaround在https://github.com/atom/atom/issues/9544。就是在init.coffee里面加了一段禁止git refresh index，配置了手工refresh的keymap。
         - [leanote导入导出MD工具](https://github.com/goodbest/Leanote4MD): 但只支持普通注册用户（通过请求服务端导入本地markdown文件），本地用户想通过插入NEDB的话，暂时没实现。
-     * 支持本地账号。隐藏功能？从代码里面看到的，否则你必须要去官方注册个账号。
-        - 要用本地账号，需要创建本地用户。把login.xml的页面里面创建本地用户的`local-form`的样式和普通用户登录框的`leanote-form`对调一下，就能显示出创建本地用户的页面了。
+     * 支持本地账号。隐藏功能？从代码里面看到的，否则你必须要去官方   注-个账号。
+        - 要用本地账号，需要创建本地用户。把login.xml的页面里面创建本地用户的`local-form`的样式和普通用户登   录框的`-eanote-form`对调一下，就能显示出创建本地用户的页面了。
      * 主题不算太丰富，但够用。而且主题能定制。
-     * 如果只用本地账号，可以将所有的NEDB数据库同步到网盘。下次导入覆盖就行了。当然，leanote官方也提供同步，有免费套餐和旗舰套餐，见：https://leanote.com/pricing
+     *    -果只用本地账号，可以将所有的NEDB数据库同步到网盘。下次导入覆盖就行了。当然，leanote官方也提供同步，有免费套餐和旗舰套餐，见：https://leanote.com/pricing
   - [haroopad](https://github.com/rhiokim/haroopad): [官网](http://pad.haroopress.com/)，韩国出品。可以没集成文件管理器，而且源码两年都没更新了。release版本v0.13.1跟github的tag都对不上号了。但作为markdown编辑器不错。本文就是在haroopad上写的。有空尝试改改它，加上文件管理器。
   - [another note](https://github.com/AnotherNote/anote):目前仅支持Mac，但开源，捣鼓下支持Windows不难。样式不错。
 

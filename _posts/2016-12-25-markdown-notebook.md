@@ -34,11 +34,14 @@ image:
 * JS版，基于Electron (atom shell)
 > Electron的缺点就是启动慢，但启动了后也不见得慢，笔记软件，也就启动一次而已啦。但优点突出，尤其在样式渲染，所以Electron desktop app一般都是全平台的，而且贴近Mac应用的酷炫。
 
-  - [atom](https://atom.io): 程序员的编辑器，原生对markdown有很好的支持。作为markdown编辑器，是很不错的选择。同时稍微改造一下，可以成为笔记本软件，只要安装以下插件。
+  - [atom](https://atom.io): 程序员的编辑器，原生对markdown有很好的支持。作为markdown编辑器，还算是不错的选择。
+  但是**缺点**也是明显的，因为是Electron应用，启动慢，而且窗口切换(windows：alt + tag)后，光标也要等好几秒才能响应（这感觉是个问题，其他Electron也没见这样子。作为Atom shell的鼻祖，这个是否可以改善一下。）
+  要想成为程序员的笔记本软件，只要稍微改造一下，安装以下插件。
      + [markdown-preview-enhanced](https://github.com/shd101wyy/markdown-preview-enhanced): 对markdown preview提供更加强大的功能，比如，scroll sync, TOC, MathJax/KaTex, export PDF, HTML, JPG, Flowchart/Sequence diagram 以及preview css自定义 等等
      + [maximize-panes](https://atom.io/packages/maximize-panes): 最大化preivew panel，作为笔记的阅读模式。
      + [vim-mode-plus](https://atom.io/packages/vim-mode-plus)
      + [vim-mode-plus-ex-mode](https://atom.io/packages/vim-mode-plus-ex-mode)
+
   - [leanote](https://github.com/leanote/leanote): 中文叫*蚂蚁笔记*
      * 开源，国人开发，代码注释都是中文，亲切？
      * 全平台，包括手机端的IOS和安卓

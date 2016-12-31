@@ -33,7 +33,7 @@ image:
 net-snmp.x86_64 (for snmptrapd)
 
 [snmptt](http://rpm.pbone.net/index.php3/stat/4/idpl/27126799/dir/redhat_el_7/com/snmptt-1.4-0.9.beta2.el7.noarch.rpm.html)
-   \--- [perl-Config-IniFiles](http://rpm.pbone.net/index.php3/stat/4/idpl/29944336/dir/redhat_el_7/com/perl-Config-IniFiles-2.83-4.1.noarch.rpm.html) 
+   \--- [perl-Config-IniFiles](http://rpm.pbone.net/index.php3/stat/4/idpl/29944336/dir/redhat_el_7/com/perl-Config-IniFiles-2.83-4.1.noarch.rpm.html)
         \--- perl-List-MoreUtils.x86_64
    \--- [perl-Net-SNMP](http://rpm.pbone.net/index.php3/stat/4/idpl/6028905/dir/redhat_7.x/com/perl-Net-SNMP-v5.0.1-1.pp-rh73.noarch.rpm.html)
         \--- perl-Digest-HMAC.noarch
@@ -67,7 +67,7 @@ net-snmp-utils.x86_64 (for snmptrap)
     + 主要配置你监测的设备所产生的SNMP trap的事件(事件的ID, 对应的OID，事件名称，状态等)
     + 配置要翻译成/格式化的格式
   - 对于Zabbix
-    + 记得在`FORMAT`关键字后添加`ZBXTRAP $aA`，e.g. `FORMAT ZBXTRAP $aA`，表示从某个host上收到了一个Zabbix需要关注的SNMP trap
+    + 记得在`FORMAT`关键字后添加`ZBXTRAP $aA`，e.g. `FORMAT ZBXTRAP $aA`，表示从某个host (这里是IP/DNS name, 需要对应监控的机器的SNMP interface上配置的IP/DNS name) 上收到了一个Zabbix需要关注的SNMP trap
     + Zabbix server就是通过扫TRAP文件中新的TRAP中是否带这些关键字从而再去SNMP trap item里面去匹配的。
 
 # 配置 Zabbix #
@@ -84,7 +84,7 @@ net-snmp-utils.x86_64 (for snmptrap)
   - 当zabbix server收到相关的SNMP trap，并能匹配到对应的item的时候。可以在监控页面的`latest data`看回这个item的详细历史记录
 - SNMP Trap Triggers
   - 可以配置产生trigger的条件，根据SNMP trap item的统计信息来做条件。
-  - 可以配置trigger恢复(问题解决)的条件 
+  - 可以配置trigger恢复(问题解决)的条件
 
 # 经验总结 #
 * 注意串通整个流程过程中各个组件的日志。因为SNMP trap on Zabbix中间流经了好几个组件，任何一个出问题，都会导致SNMP trap没法在Zabbix上被监测到。
@@ -128,4 +128,3 @@ shell> semodule -i zabbixsemanage.pp
 # Reference #
 * [SNMP traps - zabbix official](https://www.zabbix.com/documentation/3.2/manual/config/items/itemtypes/snmptrap)
 * [浅谈 Linux 系统中的 SNMP Trap](https://www.ibm.com/developerworks/cn/linux/l-cn-snmp/)
-

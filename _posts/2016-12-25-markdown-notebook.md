@@ -37,6 +37,8 @@ image:
   - [atom](https://atom.io): 程序员的编辑器，原生对markdown有很好的支持。作为markdown编辑器，是很不错的选择。同时稍微改造一下，可以成为笔记本软件，只要安装以下插件。
      + [markdown-preview-enhanced](https://github.com/shd101wyy/markdown-preview-enhanced): 对markdown preview提供更加强大的功能，比如，scroll sync, TOC, MathJax/KaTex, export PDF, HTML, JPG, Flowchart/Sequence diagram 以及preview css自定义 等等
      + [maximize-panes](https://atom.io/packages/maximize-panes): 最大化preivew panel，作为笔记的阅读模式。
+     + [vim-mode-plus](https://atom.io/packages/vim-mode-plus)
+     + [vim-mode-plus-ex-mode](https://atom.io/packages/vim-mode-plus-ex-mode)
   - [leanote](https://github.com/leanote/leanote): 中文叫*蚂蚁笔记*
      * 开源，国人开发，代码注释都是中文，亲切？
      * 全平台，包括手机端的IOS和安卓
@@ -66,7 +68,7 @@ image:
   - [QQWnNotes](https://github.com/pbek/QOwnNotes)：[官网](http://www.qownnotes.org/), 基于Qt 5.3+，强大得让人害怕。。。
 
 * 另类
- - [Notes-up](https://github.com/Philip-Scott/Notes-up): 样式很符合我口味，但基于elementary OS，什么鬼……。原来[elementary OS](https://elementary.io/zh_CN/)是基于快速、开源的 Windows / macOS 替代方案。
+  - [Notes-up](https://github.com/Philip-Scott/Notes-up): 样式很符合我口味，但基于elementary OS，什么鬼……。原来[elementary OS](https://elementary.io/zh_CN/)是基于快速、开源的 Windows / macOS 替代方案。
 
 * 纯粹的markdown编辑器
   - [markdownpad](http://www.markdownpad.com/)
@@ -76,3 +78,6 @@ image:
   - [Typora](http://www.typora.io/):很特别的markdown编辑器， 没有左右分栏的preview. WYSIWYG - What You See Is What You Get
   - [moeditor](https://github.com/Moeditor/Moeditor):[官网](https://moeditor.org/)，开源，基于Electron。
   - [markdown-plus](https://github.com/tylingsoft/markdown-plus): [官网](http://tylingsoft.com/markdown-plus/)
+
+  # 结论
+  个人认为atom跟leanote是比较适合做markdown笔记软件的。满足不了的需求需要自己折腾。

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: markdown 笔记软件
+title: markdown notebook
 description: "markdown notebook"
 tags: [SDE]
 image:

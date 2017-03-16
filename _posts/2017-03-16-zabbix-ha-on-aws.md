@@ -26,14 +26,17 @@ image:
 
 ### MariaDB ###
 - Verify connection
+
 ```shell
 mysql -h <RDS-DNS> -P 3306 -u <RDS-master-user-name> -p
 ```
+
 - `yum install -y mariadb` which use its client to connect RDS
 - `setsebool -P httpd_can_network_connect_db=1` and `setsebool -P zabbix_can_network=1`
 
 ### Postgres ###
 * Verify connection
+
 ```shell
 psql \
    --host=occ-<rds instance DNS name> \
@@ -41,6 +44,7 @@ psql \
    --username <username> \
    --password
 ```
+
 * `yum install -y postgresql`
 - `setsebool -P httpd_can_network_connect_db=1` and `setsebool -P zabbix_can_network=1`
 

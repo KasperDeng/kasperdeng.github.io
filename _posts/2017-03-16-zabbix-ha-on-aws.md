@@ -15,9 +15,34 @@ image:
 
 # HA Implementation #
 ## Decouple Zabbix Database ##
-  - Zabbix存储的数据库需要解耦出来，方便Zabbix Server主从切换，保持数据存储的唯一性。
-  - 对于Zabbix server来说，最重要的就是监控的数据。在AWS上，最方便的方式就是采用AWS的RDS作为Zabbix的后端数据库，利用AWS的服务。
-  - AWS上RDS比较强大，有MySQL, MariaDB和Postgresql可供选择。为了HA方案在别的云平台上的可重用性，选择Postgresql最为后端数据库。
+* Zabbix存储的数据库需要解耦出来，方便Zabbix Server主从切换，保持数据存储的唯一性。
+* 对于Zabbix server来说，最重要的就是监控的数据。在AWS上，最方便的方式就是采用AWS的RDS作为Zabbix的后端数据库，利用AWS的服务。
+* AWS上RDS比较强大，有MySQL, MariaDB和Postgresql可供选择。为了HA方案在别的云平台上的可重用性，选择Postgresql最为后端数据库。
+
+### RDS Setup ###
+* 启用RDS前，设置好master-user-name和master-user-password
+* 估算好检测数据所需的数据库容量大小，选择对应的DB实例类型 (e.g. db.m4.large)
+* 更新RDS的security group的设置，保证与zabbix的连通性。
+
+### MariaDB ###
+- Verify connection
+```shell
+mysql -h <RDS-DNS> -P 3306 -u <RDS-master-user-name> -p
+```
+- `yum install -y mariadb` which use its client to connect RDS
+- `setsebool -P httpd_can_network_connect_db=1` and `setsebool -P zabbix_can_network=1`
+
+### Postgres ###
+* Verify connection
+```shell
+psql \
+   --host=occ-<rds instance DNS name> \
+   --port=5432 \
+   --username <username> \
+   --password
+```
+* `yum install -y postgresql`
+- `setsebool -P httpd_can_network_connect_db=1` and `setsebool -P zabbix_can_network=1`
 
 ## AWS ELB ##
 在AWS上，zabbix service是通过AWS ELB来发现后端哪个Zone上的Zabbix server处于服务状态。

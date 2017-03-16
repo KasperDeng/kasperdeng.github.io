@@ -21,6 +21,7 @@ image:
 
 ### RDS Setup ###
 * 启用RDS前，设置好master-user-name和master-user-password
+* 选择RDS的Multi-AZ功能。备份，维护按需设置。
 * 估算好检测数据所需的数据库容量大小，选择对应的DB实例类型 (e.g. db.m4.large)
 * 更新RDS的security group的设置，保证与zabbix的连通性。
 

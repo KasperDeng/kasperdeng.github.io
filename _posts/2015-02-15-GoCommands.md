@@ -33,6 +33,7 @@ image:
 
 # go list #
 > list package information
+
 - go list -json package: print the package strcuture in json format
 - text/template syntax
    * go list -f \{\{.ImportPath\}\} package
@@ -40,12 +41,12 @@ image:
 
 {% highlight bash %}
 $ go list -json net/http
-$ go list -f {{.ImportPath}} net/http
 $ go list -json github.com/kasperdeng/grpcPt/client
 {% endhighlight %}
 
 # go test #
 > test *_test.go
+
 - `go help testflag`
 - `-i`: install the test dependencies, but not compile and run it
 - `-c`: generate test executables, but not run it

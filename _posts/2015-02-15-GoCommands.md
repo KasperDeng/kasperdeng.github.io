@@ -32,14 +32,39 @@ image:
 - `-fix`: for backword compatible
 
 # go list #
+> list package information
 - go list -json package: print the package strcuture in json format
 - text/template syntax
    * go list -f \{\{.ImportPath\}\} package
    * go list -f \{\{.S.F\}\} package
 
+{% highlight bash %}
+$ go list -json net/http
+$ go list -f {{.ImportPath}} net/http
+$ go list -json github.com/kasperdeng/grpcPt/client
+{% endhighlight %}
+
 # go test #
+> test *_test.go
+- `go help testflag`
 - `-i`: install the test dependencies, but not compile and run it
 - `-c`: generate test executables, but not run it
+- `-bench regexp` 执行相应的benchmarks，例如 -bench=.
+- `-cover` 开启测试覆盖率
+- `-run regexp` 只运行regexp匹配的函数，例如 -run=Array 执行包含有Array开头的函数
+
+# godoc #
+
+{% highlight bash %}
+$ go get golang.org/x/tools/cmd/godoc
+$ godoc -http=:8080 &
+# godoc package
+$ godoc net/http
+# godoc func
+$ godoc fmt Printf
+{% endhighlight %}
 
 # Reference #
 * [Go Command Turorial](https://github.com/hyper-carrot/go_command_tutorial/blob/master/catalog.md)
+* [极客学院 - GO 命令教程](http://wiki.jikexueyuan.com/project/go-command-tutorial/)
+* [astaxie - GO命令](https://astaxie.gitbooks.io/build-web-application-with-golang/zh/01.3.html)

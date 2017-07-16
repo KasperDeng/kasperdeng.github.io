@@ -1,7 +1,7 @@
 - title: golang 
   urls:
   - title: golang development environment setup
-    url: go-dev-env
+    url: /go-dev-env
   - title: Golang Commands
     url: /GoCommands
   - title: Type System in Java/Python/Go/Javascript

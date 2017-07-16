@@ -1,9 +1,48 @@
-- title: development 
-  docs:
-  - /_posts/
+- title: golang 
+  urls:
+  - title: golang development environment setup
+    url: go-dev-env
+  - title: Golang Commands
+    url: /GoCommands
+  - title: Type System in Java/Python/Go/Javascript
+    url: /TypeSystemInJavaPythonGoJS
+  - title: Map in Java/Python/Go/Javascript
+    url: /MapInJavaPythonGoJS
+  - title: List in Java/Python/Go/Javascript
+    url: /ListInJavaPythonGoJS
+  - title: Set in Java/Python/Go/Javascript
+    url: /SetInJavaPythonGoJS
+  - title: String in Java/Python/Go/Javascript
+    url: /StringInJavaPythonGoJS
+  - title: Operator in Java/Python/Go/Javascript
+    url: /operatorInJavaPythonGoJS
+  - title: Constant Pool in Java/Python/Go/Javascript
+    url: /ConstantPoolInJavaPythonGoJS
 
-- title: golang-overview
-  url: /programming/golang/go-overview.html
+- title: zabbix
+  urls:
+  - title: Zabbix Introduction
+    url: /zabbix
+  - title: Zabbix SNMP Trap
+    url: /zabbix-snmp-trap
+  - title: Zabbix SNMP Trap Trigger
+    url: /zabbix-snmp-trap-trigger
+  - title: Zabbix HA on AWS
+    url: /zabbix-ha-on-aws
 
-- title: react-overview
-  url: /programming/javascript/react-native-overview.html
+- title: DevOps
+  urls:
+  - title: Production DevOps
+    url: /ProductionDevOps
+
+- title: Dev Tools
+  urls:
+  - title: Markdown Notebook Comparation
+    url: /markdown-notebook
+
+- title: Overview
+  urls:
+  - title: golang overview
+    url: /programming/golang/go-overview.html
+  - title: react overview
+    url: /programming/javascript/react-native-overview.html

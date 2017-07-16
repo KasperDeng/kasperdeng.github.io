@@ -45,14 +45,15 @@ net-snmp-utils.x86_64 (for snmptrap)
 ```
 
 # 配置snmptrapd #
-* `/etc/snmp/snmptrapd`
-  - 配置snmptrapd默认的handler是snmptt, e.g. `traphandle default snmptt`
+* `/etc/snmp/snmptrapd.conf`
+  - 配置snmptrapd默认的handler是snmptt, e.g. `traphandle default /usr/sbin/snmptt`
   - 配置是否禁止做身份验证等
-* 检查snmptrapd启动服务所带的参数是否满足需求, 默认安装后的启动参数比较弱爆，建议添加以下的参数
+* 检查snmptrapd启动服务(e.g. `/usr/lib/systemd/system/snmptrapd.service`)所带的参数是否满足需求, 默认安装后的启动参数比较弱爆，建议添加以下的参数
   - `-Lf [Log file]`: Log messages to the specified file. snmptrapd的日志文件，用于检查或记录是否收到对应的SNMP trap
   - REF: http://net-snmp.sourceforge.net/docs/man/snmptrapd.html
-* `chkconfig snmptrapd on`
-  + 添加snaptrapd作为默认启动服务，跟zabbix server service的behavior保持一致
+* 添加snaptrapd作为默认启动服务，跟zabbix server service的behavior保持一致
+  - REHL 6.x `chkconfig snmptrapd on`
+  - REHL/CentOS 7.x `systemctl enable snmptrapd`
 
 # 配置snmptt #
 * `/etc/snmp/snmptt.ini`
@@ -60,7 +61,13 @@ net-snmp-utils.x86_64 (for snmptrap)
     + log_file = /tmp/my_zabbix_traps.tmp  // 翻译的SNMP trap写到的文件路径, 一定要跟Zabbix Server的配置`SNMPTrapperFile`一致
     + date_time_format = %H:%M:%S %Y/%m/%d
     + 使用snmptt的standalone model
-  - 主要配置
+
+```shell
+# Set to either 'standalone' or 'daemon'
+# standalone: snmptt called from snmptrapd.conf
+# daemon: snmptrapd.conf calls snmptthandler
+```
+
 * `/etc/snmp/snmptt.conf`
   - 配置如何翻译由snmptrapd扔过来的snmp trap
   - 跟具体设备上报业务相关

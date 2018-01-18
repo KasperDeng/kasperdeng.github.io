@@ -14,14 +14,14 @@ image:
   - 对于JMX, Zabbix server需要向[Zabbix Java Gateway](https://www.zabbix.com/documentation/3.4/manual/concepts/java)查询，而不是Zabbix Agent。
   - Java gateway 跟被监控应用的JMX management api的调用应该是畅通无阻的，网络上不应该被防火墙阻塞。如果JMX需要认证的话，是要能通过的。如果只是用在非生产环境，也可以取消认证。
   
-  ~~~java
-  java \
-    -Dcom.sun.management.jmxremote \
-    -Dcom.sun.management.jmxremote.port=12345 \
-    -Dcom.sun.management.jmxremote.authenticate=false \
-    -Dcom.sun.management.jmxremote.ssl=false \
-    -jar application.jar
-  ~~~
+~~~java
+java \
+  -Dcom.sun.management.jmxremote \
+  -Dcom.sun.management.jmxremote.port=12345 \
+  -Dcom.sun.management.jmxremote.authenticate=false \
+  -Dcom.sun.management.jmxremote.ssl=false \
+  -jar application.jar
+~~~
 
 # Zabbix Java Gateway Installation
 

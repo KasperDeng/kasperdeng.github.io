@@ -1,5 +1,7 @@
 - title: golang 
   urls:
+  - title: golang notes
+    url: /Golang-Notes
   - title: golang development environment setup
     url: /go-dev-env
   - title: Golang Commands
@@ -29,6 +31,8 @@
     url: /zabbix-snmp-trap-trigger
   - title: Zabbix HA on AWS
     url: /zabbix-ha-on-aws
+  - title: Zabbix JMX
+    url: zabbix-jmx/
 
 - title: DevOps
   urls:

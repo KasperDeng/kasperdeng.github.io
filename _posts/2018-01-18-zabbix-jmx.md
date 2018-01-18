@@ -78,4 +78,4 @@ StartJavaPollers=5    # java gateway threads, if value=0, means disable monitor 
 * 安利一个zabbix模板的搜索
   - https://monitoringartist.github.io/zabbix-searcher/
   - github: https://github.com/monitoringartist/zabbix-community-repos
-* 这里找到一个比较新的cassandra监控模板 [Template-Database-Cassandra-(m0t0k1ch1)](https://github.com/monitoringartist/zabbix-community-repos/tree/master/Template-Database-Cassandra-(m0t0k1ch1)
+* 这里找到一个比较新的cassandra监控模板 [Template-Database-Cassandra-(m0t0k1ch1)](https://github.com/m0t0k1ch1/zabbix-cassandra-template)

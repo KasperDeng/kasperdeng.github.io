@@ -69,6 +69,29 @@ StartJavaPollers=5    # java gateway threads, if value=0, means disable monitor 
 * Template
   - 导入监控JMX的模板或自己创建，attach到被监控节点。一般模板对JMX的认证的用户名，密码是做成模板的环境变量，根据情况配置。
 
+* Cassandra
+
+因为 Cassandra 默认打开本地的 JMX，而 Zabbix 需要远程访问，所以需要修改 Cassandra 配置
+
+  - 找到并修改 cassandra-env.sh 文件中的下列内容：
+    ~~~shell
+    - # JVM_OPTS="$JVM_OPTS -Djava.rmi.server.hostname=<public name>"
+    + JVM_OPTS="$JVM_OPTS -Djava.rmi.server.hostname=<replace this with your hostname>"
+
+    - if [ "x$LOCAL_JMX" = "x" ]; then
+          LOCAL_JMX=yes
+      fi
+    + if [ "x$LOCAL_JMX" = "x" ]; then
+          LOCAL_JMX=no
+      fi
+
+    - JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.authenticate=true"
+    + JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.authenticate=false"
+
+    - JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.password.file=/etc/cassandra/jmxremote.password"
+    + # JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.password.file=/etc/cassandra/jmxremote.password"
+    ~~~
+
 ## 效果
 
 ![cassandra_dashboard](https://raw.githubusercontent.com/KasperDeng/kasperdeng.github.io/master/images/zabbix/cassandra_dashboard.png)

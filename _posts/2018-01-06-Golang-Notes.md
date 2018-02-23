@@ -56,7 +56,7 @@ image:
 
 ## 基本数据类型 ##
 
-~~~golang
+```golang
 bool
 string
 int int8 int16 int32 int64
@@ -65,7 +65,7 @@ byte //uint8的别名
 rune //uint32的别名，代表一个unicode码
 float32 float64
 complex64 complex128
-~~~
+```
 
 * 其他变量不能强制当作布尔类型使用
 * int, uint, uintptr: 32/64 bit int, flatform dependent
@@ -106,10 +106,10 @@ complex64 complex128
   - 非nil值的slice的长度和容量也是0的
 * 构建
 
-~~~golang
+```golang
 make([]T, len) // len == cap
 make([]T, len, cap) // same as make([]T, cap)[:len]
-~~~
+```
 
 ![slice](https://books.studygolang.com/gopl-zh/images/ch4-01.png)
 
@@ -127,22 +127,22 @@ make([]T, len, cap) // same as make([]T, cap)[:len]
 - `p`代表的是变量 i 的内存地址，类型是`*int`
 - `*p`对应p指针指向的变量的值
 
-~~~golang
+```golang
 i := 1
 p := &i
 *p = 2
-~~~
+```
 
 * 有指针但没有指针运算
 
 # 表达式 #
 * "++"、"--" 是语句而非表达式
 
-~~~golang
+```golang
 b := n++ // syntax error
 if n++ == 1 {} // syntax error
 ++n // syntax error
-~~~
+```
 
 * 不支持三元操作符 `a > b ? a : b`
 * range
@@ -190,13 +190,13 @@ fmt.Println(sum(values...)) // slice as real argument for Variadic Functions
 * Go中大部分函数的代码结构几乎相同
   - 首先是一系列的初始检查，防止错误发生，之后是函数的实际逻辑。
 
-## 函数值(function value，closures(闭包) ##
+## 函数值(Function Value, Closures(闭包)) ##
 * 函数拥有类型，可以被赋值给其他变量，传递给函数，从函数返回。对函数值的调用类似函数调用。
 * 函数值不可比较，因为函数值除了引用了代码，还记录了状态(闭包)。它只能跟其零值(nil)比，用于作初始值检查。
 * 函数值中记录的变量的内存地址，而不是某一刻的值。
 * 更多闭包与作用域的知识，可参考javascipt的书[You-Dont-Know-JS](https://github.com/getify/You-Dont-Know-JS)或其[gitbook](https://maximdenisov.gitbooks.io/you-don-t-know-js/content/)，概念相通。
 
-## 匿名函数(anonymous function) ##
+## 匿名函数(Anonymous Function) ##
 * 通过函数字面量(function literal)定义
 * 匿名函数可以访问完整的词法作用域。
 
@@ -204,7 +204,7 @@ fmt.Println(sum(values...)) // slice as real argument for Variadic Functions
 * for
   - Go语言只有关键字`for`用于循环
 
-~~~golang
+```golang
 for i:=1; i < 10; i++ {
    //doSomething()
 }
@@ -220,16 +220,16 @@ for i < 10 {
 for {
 
 }
-~~~
+```
 
 * if
   - if 可以在条件之前执行一个简单的语句
 
-~~~golang
+```golang
 if err := WaitForServer(url); err != nil {
     log.Fatalf("Site is down: %v\n", err)
 }
-~~~
+```
 
 * switch
   - 与C，Java不同，默认匹配的分支会自动终止，无须`break`，想贯穿的话，显式地在分支加fallthrough语句
@@ -243,12 +243,10 @@ if err := WaitForServer(url); err != nil {
 | %#v          | fmt.Printf("%#v\n", w)              | Wheel{Circle:Circle{Point:Point{X:42, Y:8}, Radius:5}, Spokes:20}  | # - print every member with name in struct   |  
 
 # 参考 #
-* Go语言圣经（中文版）
-  - https://books.studygolang.com/gopl-zh/
+* [Go语言圣经(中文版)](https://books.studygolang.com/gopl-zh/)
   - https://docs.hacknode.org/gopl-zh/
-* [gopl](http://gopl.io)
+* [Go语言圣经英文版-gopl](http://gopl.io)
   - [英文版在线](https://www.safaribooksonline.com/library/view/the-go-programming/9780134190570/)
 * Go语言圣经中文版-github
   - https://github.com/golang-china/gopl-zh
   - [源文件构建离线版本](https://github.com/gopl-zh/gopl-zh.github.com)
-* [Go语言圣经英文版-gopl](http://www.gopl.io/)

@@ -18,16 +18,21 @@ image:
 
 # 变量 #
 * 定义
-  - 采用了Javascript相同的关键字'var'和类型推断。但GO语言是强类型语言，所以可显式定义类型，变量类型的声明写在变量名称之后。
+  - 采用了关键字`var`定义(Javascript类似)，编译器支持类型推断。但GO语言是强类型语言，所以可显式定义类型，变量类型的声明写在变量名称之后。
 * 初始化
   - 零值初始化，在语言层面上保证值的初始化
     + 数值类型变量对应的零值是0
     + 布尔类型变量对应的零值是false
     + 字符串类型对应的零值是空字符串
-    + 接口或引用类型（包括slice、指针、map、chan和函数）变量对应的零值是nil
+    + 接口或引用类型(包括slice、指针、map、chan和函数)变量对应的零值是nil
   - 初始化表达式可以是字面量或任意的表达式(e.g. new(T))
     + 包级变量会在main执行前完成初始化
   - 支持多变量初始化赋值，混合类型，平行赋值
+
+```golang
+var s, n = "abc", 123 // 多变量赋值，混合类型的平行赋值
+```
+
 * 作用域
   - 类型
     + 全局作用域
@@ -47,7 +52,17 @@ image:
     + 函数体外：必须以`var`开头
 
 # 常量 #
-* 关键字`const`定义和类型推断。
+* 关键字`const`定义常量，支持编译器类型推断。
+* itoa: 定义常量组中从 0 开始按行计数的自自增枚举值。
+* 常量值可以是len、cap、unsafe.Sizeof等编译期可确定结果的函数返回值[4]。
+
+```
+const (
+a = "abc"
+b = len(a)
+c = unsafe.Sizeof(b)
+)
+```
 
 # 类型 #
 
@@ -56,21 +71,34 @@ image:
 
 ## 基本数据类型 ##
 
-```golang
-bool
-string
-int int8 int16 int32 int64
-uint uint8 uint16 uint32 uint64 uintptr
-byte //uint8的别名
-rune //uint32的别名，代表一个unicode码
-float32 float64
-complex64 complex128
-```
-
-* 其他变量不能强制当作布尔类型使用
-* int, uint, uintptr: 32/64 bit int, flatform dependent
-* GO把复数作为基本类型，对于高级数学运算，深度学习有帮助。GONUM或许将会成为numpy的强大对手。
-
+| type          | length  | default  | note                      |  
+| :----------:  | :-----: | :------: | :-----------------------: |  
+| bool          | 1       | false    |                           |  
+| byte          | 1       | 0        | uint8的别名               |  
+| rune          | 4       | 0        | unicode码, uint32的别名   |  
+| int, uint     | 4 or 8  | 0        | 32/64bit，依赖平台编译器  |  
+| int8, uint8   | 1       | 0        | -128 ~ 127, 0 ~ 255       |  
+| int16, uint16 | 2       | 0        | -32768 ~ 32767, 0 ~ 65535 |  
+| int32, uint32 | 4       | 0        | -21亿 ~ 21亿, 0 ~ 42亿    |  
+| int64, uint64 | 8       | 0        |                           |  
+| float32       | 4       | 0.0      |                           |  
+| float64       | 8       | 0.0      |                           |  
+| complex64     | 8       |          |                           |  
+| complex128    | 16      |          |                           |  
+| uintptr       | 4 or 8  |          | 可存储指针的uint32/uint64 |  
+| array         |         |          | 值类型                    |  
+| struct        |         |          | 值类型                    |  
+| string        |         | ""       | UTF-8 字符串              |  
+| slice         |         | nil      | 引用类型                  |  
+| map           |         | nil      | 引用类型                  |  
+| channel       |         | nil      | 引用类型                  |  
+| interface     |         | nil      | 接口                      |  
+| function      |         | nil      | 函数                      |  
+ 
+ 
+ * 其他变量不能强制当作布尔类型使用
+ * GO把复数作为基本类型，对于高级数学运算，深度学习有帮助。GONU M或许将会成为numpy的强大对手。
+  
 ## 复合数据类型 ##
 * 数组的长度必须是常量表达式，因为数组的长度需要在编译阶段确定
 * 数组依然很少用作函数参数；相反，我们一般使用slice来替代数组
@@ -122,18 +150,27 @@ make([]T, len, cap) // same as make([]T, cap)[:len]
   - 效率：较大的结构体通常会用指针的方式传入和返回
   - 函数内部修改结构体成员的话，必须用指针传入；在Go语言中，所有的函数参数都是值拷贝传入的。
 
-# 指针 #
-* 和C++一样，&是取地址符
-- `p`代表的是变量 i 的内存地址，类型是`*int`
-- `*p`对应p指针指向的变量的值
+#### 指针 ####
+* `&`是取变量地址符(`p`指向变量`i`的内存地址)，`*p`透过指针访问目标对象，支持指针类型`*T`，支持指针的指针`**T` (和C++一样)
 
 ```golang
 i := 1
-p := &i
-*p = 2
+p := &i // p的类型是*int(指针类型*T)
+*p = 2  // 对应指针p指向的变量的值
 ```
 
-* 有指针但没有指针运算
+* 不支持指针运算，比如p++。不支持 "->" 运算符 (和C++不一样)
+* 空指针值:nil，非C++的NULL，非java的null。
+* 指针类型装换：可以通过unsafe.Pointer和任意类型指针间进行转换。
+* 可以通过将unsafe.Pointer转换成uintptr，配合unsafe.Offsetof变相进行指针运算[4]。
+* 返回局部变量指针是安全的,编译器会根据需要将其分配在GC Heap上。
+
+#### 变量内存[4] ####
+* new
+  - new计算类型大小,为其分配零值内存,返回指针。
+* make
+  - make只支持引用类型的map, slice, chan。
+  - make会被编译器翻译成具体的创建/构造函数,由其分配内存和初始化成员结构,返回对象而非指针。
 
 # 表达式 #
 * "++"、"--" 是语句而非表达式
@@ -180,7 +217,7 @@ fmt.Println(sum(values...)) // slice as real argument for Variadic Functions
 * 若返回值有显式的变量名，函数的return语句可以省略操作数(bare return)。bare return可以减少代码的重复，但是某些场景使得代码难以被理解，不宜过度使用。
 * 支持多返回值(类似python的多返回值特性)
   - 多返回值的设计，使得可预料、可控制的错误得到良好的处理，而不用像那些将错误看作是异常的语言那样子通过抛/捕异常的方式来处理。
-* 调用者可以通过`_`(blank identifier)忽略没用的返回值。
+* 调用者可以通过`_`(空标识符，blank identifier)忽略没用的返回值。
 
 ## 作用域 ##
 * 函数的形参和有名返回值作为函数最外层的局部变量，被存储在相同的词法块中。
@@ -193,12 +230,25 @@ fmt.Println(sum(values...)) // slice as real argument for Variadic Functions
 ## 函数值(Function Value, Closures(闭包)) ##
 * 函数拥有类型，可以被赋值给其他变量，传递给函数，从函数返回。对函数值的调用类似函数调用。
 * 函数值不可比较，因为函数值除了引用了代码，还记录了状态(闭包)。它只能跟其零值(nil)比，用于作初始值检查。
-* 函数值中记录的变量的内存地址，而不是某一刻的值。
+
+### 闭包 ###
+* 闭包：词法闭包(Lexical Closure)的简称，是指引用了自由变量的函数。这个被引用的自由变量将和这个函数一同存在，即使已经离开了创造它的环境也不例外。所以，有另一种说法认为闭包是由函数和与其相关的引用环境组合而成的实体。当函数离开创建环境后，依然持有其上下状态。
+* 闭包中引用的是自由变量的内存地址，而不是某一刻的值，这些自由变量以及其引用的对象并没有被释放。
 * 更多闭包与作用域的知识，可参考javascipt的书[You-Dont-Know-JS](https://github.com/getify/You-Dont-Know-JS)或其[gitbook](https://maximdenisov.gitbooks.io/you-don-t-know-js/content/)，概念相通。
 
 ## 匿名函数(Anonymous Function) ##
 * 通过函数字面量(function literal)定义
 * 匿名函数可以访问完整的词法作用域。
+
+## 异常 ##
+* Deferred Function
+  - 包含该defer语句的函数执行完毕时，defer后的函数会在在释放堆栈信息之前被执行。
+  - defer语句采用压栈方式，执行顺序与声明顺序相反。
+* panic(err)
+  - panic函数接受任何值做输入参数，作为某种错误信息，以panic value的形式输出到日志。
+  - panic会引起程序的崩溃，一般用于严重错误。
+* recover()
+  - recover会使程序从panic中恢复，并返回panic value。
 
 # 控制流 #
 * for
@@ -241,12 +291,17 @@ if err := WaitForServer(url); err != nil {
 | :----------: | :---------------------------------: | :----------------------------------------------------------------: | :------------------------------------------: |  
 | %T           | fmt.Printf("i is of type %T\n", i)  |                                                                    | print type of variable/function              |  
 | %#v          | fmt.Printf("%#v\n", w)              | Wheel{Circle:Circle{Point:Point{X:42, Y:8}, Radius:5}, Spokes:20}  | # - print every member with name in struct   |  
+| %p           | fmt.Printf("%p\n", p)               | 0x2101ef018                                                        | print pointer address                        |
+
+* Deferred Function
+  - 调试复杂程序时，defer机制可用于记录何时进入和退出函数，以及记录输入参数以及返回值。
 
 # 参考 #
-* [Go语言圣经(中文版)](https://books.studygolang.com/gopl-zh/)
-  - https://docs.hacknode.org/gopl-zh/
-* [Go语言圣经英文版-gopl](http://gopl.io)
-  - [英文版在线](https://www.safaribooksonline.com/library/view/the-go-programming/9780134190570/)
-* Go语言圣经中文版-github
-  - https://github.com/golang-china/gopl-zh
-  - [源文件构建离线版本](https://github.com/gopl-zh/gopl-zh.github.com)
+1. [Go语言圣经(中文版)](https://books.studygolang.com/gopl-zh/)
+   - https://docs.hacknode.org/gopl-zh/
+2. [Go语言圣经英文版-gopl](http://gopl.io)
+   - [英文版在线](https://www.safaribooksonline.com/library/view/the-go-programming/9780134190570/)
+3. Go语言圣经中文版-github
+   - https://github.com/golang-china/gopl-zh
+   - [源文件构建离线版本](https://github.com/gopl-zh/gopl-zh.github.com)
+4. [雨痕-Go学习笔记第四版](https://github.com/qyuhen/book)

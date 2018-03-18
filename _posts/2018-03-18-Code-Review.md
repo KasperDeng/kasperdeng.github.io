@@ -7,12 +7,10 @@ image:
   background: triangular.png
 ---
 
-# 混乱 #
-Code review，一个老生常谈的话题。最近看到产品开发过程中各种混乱的问题，代码质量的问题，觉得我们的Code Review的付出还是过于随意，简单，流程化。
 
 # Code Review 是什么？ #
 
-![TheSecretToCodeQuality](https://pbs.twimg.com/media/CgAbqE6W4AASmwe.jpg:large)
+![TheSecretToCodeQuality](https://pbs.twimg.com/media/CgAbqE6W4AASmwe.jpg)
 
 > wikipedia: Code review is systematic examination (sometimes referred to as peer review) of computer source code. It is intended to find mistakes overlooked in software development, improving the overall quality of software. 
 

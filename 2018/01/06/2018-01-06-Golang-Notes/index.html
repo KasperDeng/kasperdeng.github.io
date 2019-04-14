@@ -1,0 +1,488 @@
+<!DOCTYPE html><html lang="en"><head><meta name="generator" content="Hexo 3.8.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>《go语言圣经》读书笔记 | Kasper's Blog</title><link rel="stylesheet" type="text/css" href="/css/style.css"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script></head><link rel="stylesheet" type="text/css" href="/plugins/prettify/doxy.css"><script type="text/javascript" src="/js/ready.js" async></script><body><div class="mobile-head" id="mobile-head"><div class="navbar-icon"><span></span><span></span><span></span></div><div class="navbar-title"><a href="/">KasperDeng</a></div><div class="navbar-search"><!--= show a circle here--></div></div><div class="h-wrapper" id="menu"><nav class="h-head box"><div class="m-hdimg"><a class="hdimg img" href="/"><img class="nofancybox" src="/img/profile.png" width="128" height="128"></a><h1 class="ttl"><a href="/">Kasper's Blog</a></h1></div><p class="m-desc">They're both convinced that a sudden passion joined them. <br>Such certainty is beautiful, but uncertainty is more beautiful still.</p><div class="m-nav"><ul><li><span class="dot">●</span><a href="/archives/">归档</a></li><li><span class="dot">●</span><a href="/categories/">分类</a></li><li><span class="dot">●</span><a href="/tags/">标签</a></li><li><span class="dot">●</span><a href="/about/">关于</a></li><li><span class="dot">●</span><a href="/atom.xml">RSS</a></li><li class="m-sch"><form class="form" id="j-formsch" action="/search" method="get"><input class="txt" type="text" id="local-search-input" name="q" value="搜索" onfocus="if(this.value=='搜索'){this.value='';}" onblur="if(this.value==''){this.value='搜索';}"></form></li></ul><div id="local-search-result"></div></div></nav></div><div id="back2Top"><a class="fa fa-arrow-up" title="Back to top" href="#"></a></div><div class="box" id="container"><div class="l-wrapper"><div class="l-content box"><div class="l-post l-post-art"><article class="p-art"><div class="p-header box"><h1 class="p-title">《go语言圣经》读书笔记</h1><div class="p-info"><span class="p-date"><i class="fa fa-calendar"></i><a href="/2018/01/06/2018-01-06-Golang-Notes/">2018-01-06</a></span><span class="p-view" id="busuanzi_container_page_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_page_pv"></span></span></div></div><div class="p-content"><h1 id="序"><a href="#序" class="headerlink" title="序"></a>序</h1><p>终于有点时间重新回到正常的学习节奏。心里念念不忘GO语言，于是重温一下GO语言的语法，顺便记录下笔记。希望成为一个能实战的GO程序员。</p>
+<h1 id="哲学，思想"><a href="#哲学，思想" class="headerlink" title="哲学，思想"></a>哲学，思想</h1><ul>
+<li>“21世纪的C语言”</li>
+<li>简洁编程哲学的宣言，从长远来看，简洁依然是好软件的关键因素。</li>
+<li>Go从C语言继承了相似的表达式语法、控制流结构、基础数据类型、调用参数传值、指针等很多思想。</li>
+</ul>
+<h1 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h1><ul>
+<li>定义<ul>
+<li>采用了关键字<code>var</code>定义(Javascript类似)，编译器支持类型推断。但GO语言是强类型语言，所以可显式定义类型，变量类型的声明写在变量名称之后。</li>
+</ul>
+</li>
+<li>初始化<ul>
+<li>零值初始化，在语言层面上保证值的初始化<ul>
+<li>数值类型变量对应的零值是0</li>
+<li>布尔类型变量对应的零值是false</li>
+<li>字符串类型对应的零值是空字符串</li>
+<li>接口或引用类型(包括slice、指针、map、chan和函数)变量对应的零值是nil</li>
+</ul>
+</li>
+<li>初始化表达式可以是字面量或任意的表达式(e.g. new(T))<ul>
+<li>包级变量会在main执行前完成初始化</li>
+</ul>
+</li>
+<li>支持多变量初始化赋值，混合类型，平行赋值</li>
+</ul>
+</li>
+</ul>
+<pre><code class="golang">var s, n = &quot;abc&quot;, 123 // 多变量赋值，混合类型的平行赋值
+</code></pre>
+<ul>
+<li>作用域<ul>
+<li>类型<ul>
+<li>全局作用域</li>
+<li>包级作用域: 包中声明的名字，d同一个包的任何源文件中访问</li>
+<li>源文件作用域: 对于某源文件<strong>导入的包</strong>，对同一包中的其他源文件不可见</li>
+<li>局部作用域: 例如函数内部</li>
+</ul>
+</li>
+<li>变量的词法作用域(lexical scope)与一般编程语言一样，就近原则(Principle of Proximity)。<ul>
+<li>NOTE: 在”Go语言圣经” 2.7 “作用域” 一节中，着重强调了作用域与生命周期的概念<ul>
+<li>声明语句的作用域对应的是一个源代码的文本区域；是一个编译时的属性。</li>
+<li>生命周期是指程序运行时变量存在的有效时间段，在此时间区域内它可以被程序的其他部分引用；是一个运行时的概念。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>定义在函数体内，局部变量。生命周期随着引用不可达而被GC回收而终结。<ul>
+<li>因为Go语言的指针和闭包，局部变量的生命周期与JS类似，并不一定随着函数运行结束而消亡。</li>
+<li>同时闭包也影响变量是在堆还是在栈上分配内存空间。</li>
+</ul>
+</li>
+<li>定义在函数体外，包级变量。生命周期和整个程序的运行周期是一致的。</li>
+<li>声明方式的不同<ul>
+<li>函数体内: 可用简短变量声明<code>:=</code>(声明并赋初值)，省略<code>var</code>，并由编译器自行类型推断</li>
+<li>函数体外：必须以<code>var</code>开头</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h1><ul>
+<li>关键字<code>const</code>定义常量，支持编译器类型推断。</li>
+<li>itoa: 定义常量组中从 0 开始按行计数的自自增枚举值。</li>
+<li>常量值可以是len、cap、unsafe.Sizeof等编译期可确定结果的函数返回值[4]。</li>
+</ul>
+<pre><code>const (
+a = &quot;abc&quot;
+b = len(a)
+c = unsafe.Sizeof(b)
+)
+</code></pre><h1 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h1><h2 id="Go是强类型语言"><a href="#Go是强类型语言" class="headerlink" title="Go是强类型语言"></a>Go是强类型语言</h2><ul>
+<li>类型转换需要<strong>显式</strong>转换: T(v)将值v转换为类型T (Java程序员对于Go的强制类型转换表达方式要适应一下了…)</li>
+</ul>
+<h2 id="基本数据类型"><a href="#基本数据类型" class="headerlink" title="基本数据类型"></a>基本数据类型</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">type</th>
+<th style="text-align:center">length</th>
+<th style="text-align:center">default</th>
+<th style="text-align:center">note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">bool</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">byte</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">uint8的别名</td>
+</tr>
+<tr>
+<td style="text-align:center">rune</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">unicode码, uint32的别名</td>
+</tr>
+<tr>
+<td style="text-align:center">int, uint</td>
+<td style="text-align:center">4 or 8</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">32/64bit，依赖平台编译器</td>
+</tr>
+<tr>
+<td style="text-align:center">int8, uint8</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">-128 ~ 127, 0 ~ 255</td>
+</tr>
+<tr>
+<td style="text-align:center">int16, uint16</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">-32768 ~ 32767, 0 ~ 65535</td>
+</tr>
+<tr>
+<td style="text-align:center">int32, uint32</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">-21亿 ~ 21亿, 0 ~ 42亿</td>
+</tr>
+<tr>
+<td style="text-align:center">int64, uint64</td>
+<td style="text-align:center">8</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">float32</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">0.0</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">float64</td>
+<td style="text-align:center">8</td>
+<td style="text-align:center">0.0</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">complex64</td>
+<td style="text-align:center">8</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">complex128</td>
+<td style="text-align:center">16</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">uintptr</td>
+<td style="text-align:center">4 or 8</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">可存储指针的uint32/uint64</td>
+</tr>
+<tr>
+<td style="text-align:center">array</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">值类型</td>
+</tr>
+<tr>
+<td style="text-align:center">struct</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">值类型</td>
+</tr>
+<tr>
+<td style="text-align:center">string</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">“”</td>
+<td style="text-align:center">UTF-8 字符串</td>
+</tr>
+<tr>
+<td style="text-align:center">slice</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">nil</td>
+<td style="text-align:center">引用类型</td>
+</tr>
+<tr>
+<td style="text-align:center">map</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">nil</td>
+<td style="text-align:center">引用类型</td>
+</tr>
+<tr>
+<td style="text-align:center">channel</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">nil</td>
+<td style="text-align:center">引用类型</td>
+</tr>
+<tr>
+<td style="text-align:center">interface</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">nil</td>
+<td style="text-align:center">接口</td>
+</tr>
+<tr>
+<td style="text-align:center">function</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">nil</td>
+<td style="text-align:center">函数</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>其他变量不能强制当作布尔类型使用</li>
+<li>GO把复数作为基本类型，对于高级数学运算，深度学习有帮助。GONU M或许将会成为numpy的强大对手。</li>
+</ul>
+<h2 id="复合数据类型"><a href="#复合数据类型" class="headerlink" title="复合数据类型"></a>复合数据类型</h2><ul>
+<li>数组的长度必须是常量表达式，因为数组的长度需要在编译阶段确定</li>
+<li>数组依然很少用作函数参数；相反，我们一般使用slice来替代数组</li>
+<li>数组和结构体是有固定内存大小的数据结构</li>
+<li>slice和map是变长的序列，动态的数据结构</li>
+</ul>
+<h3 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h3><ul>
+<li>由同构的元素组成</li>
+</ul>
+<h3 id="结构体"><a href="#结构体" class="headerlink" title="结构体"></a>结构体</h3><ul>
+<li>由异构的元素组成</li>
+<li>一个命名为S的结构体类型将不能再包含S类型的成员：因为一个聚合的值不能包含它自身。</li>
+<li>一个命名为S类型的结构体可以包含<code>*S</code>指针类型的成员，以创建递归的数据结构。</li>
+<li>匿名成员<ul>
+<li>匿名成员特性只是对访问嵌套成员的点运算符提供了简短的语法糖。</li>
+<li>结构体字面值并不能用匿名成员的语法糖的简短表示法来赋值，会导致编译错误。</li>
+<li>匿名成员在结构体的可见性由匿名成员类型的可导出性控制。</li>
+</ul>
+</li>
+</ul>
+<h3 id="slice"><a href="#slice" class="headerlink" title="slice"></a>slice</h3><ul>
+<li>slice底层引用一个匿名的数组对象。</li>
+<li>slice是轻量级的数据结构，一种高效率的(指针)、可变长的(长度)、预留扩展空间(容量)的数组。<ul>
+<li>指针: 指向第一个slice元素对应的底层数组元素的地址，slice的第一个元素并不一定就是底层数组的第一个元素。</li>
+<li>长度：slice中元素的数目，长度不能超过容量。len函数返回slice的长度。</li>
+<li>容量: 从slice的开始位置到底层数据的结尾位置。cap函数返回slice的容量。</li>
+</ul>
+</li>
+<li>切片操作<ul>
+<li>s := array[i:j]</li>
+<li>s[m:n], 0 ≤ m ≤ n ≤ cap(s)<ul>
+<li>切片操作(m-n)超出cap(s)的上限将导致一个panic异常</li>
+<li>超出len(s)则是意味着扩展了slice，长度变大。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>比较<ul>
+<li>零值的slice等于nil。一个nil值的slice并没有底层数组。一个nil值的slice的长度和容量都是0</li>
+<li>非nil值的slice的长度和容量也是0的</li>
+</ul>
+</li>
+<li>构建</li>
+</ul>
+<pre><code class="golang">make([]T, len) // len == cap
+make([]T, len, cap) // same as make([]T, cap)[:len]
+</code></pre>
+<p><img src="https://books.studygolang.com/gopl-zh/images/ch4-01.png" alt="slice"></p>
+<h3 id="map"><a href="#map" class="headerlink" title="map"></a>map</h3><ul>
+<li><p>Go语言没有<code>Set</code>数据类型，采用节省内存(value是bool或者空结构体)的map当作set: map[string]struct{}</p>
+</li>
+<li><p>值类型 vs. 指针类型</p>
+<ul>
+<li>结构体可以作为函数的参数和返回值</li>
+<li>效率：较大的结构体通常会用指针的方式传入和返回</li>
+<li>函数内部修改结构体成员的话，必须用指针传入；在Go语言中，所有的函数参数都是值拷贝传入的。</li>
+</ul>
+</li>
+</ul>
+<h4 id="指针"><a href="#指针" class="headerlink" title="指针"></a>指针</h4><ul>
+<li><code>&amp;</code>是取变量地址符(<code>p</code>指向变量<code>i</code>的内存地址)，<code>*p</code>透过指针访问目标对象，支持指针类型<code>*T</code>，支持指针的指针<code>**T</code> (和C++一样)</li>
+</ul>
+<pre><code class="golang">i := 1
+p := &amp;i // p的类型是*int(指针类型*T)
+*p = 2  // 对应指针p指向的变量的值
+</code></pre>
+<ul>
+<li>不支持指针运算，比如p++。不支持 “-&gt;” 运算符 (和C++不一样)</li>
+<li>空指针值:nil，非C++的NULL，非java的null。</li>
+<li>指针类型装换：可以通过unsafe.Pointer和任意类型指针间进行转换。</li>
+<li>可以通过将unsafe.Pointer转换成uintptr，配合unsafe.Offsetof变相进行指针运算[4]。</li>
+<li>返回局部变量指针是安全的,编译器会根据需要将其分配在GC Heap上。</li>
+</ul>
+<h4 id="变量内存-4"><a href="#变量内存-4" class="headerlink" title="变量内存[4]"></a>变量内存[4]</h4><ul>
+<li>new<ul>
+<li>new计算类型大小,为其分配零值内存,返回指针。</li>
+</ul>
+</li>
+<li>make<ul>
+<li>make只支持引用类型的map, slice, chan。</li>
+<li>make会被编译器翻译成具体的创建/构造函数,由其分配内存和初始化成员结构,返回对象而非指针。</li>
+</ul>
+</li>
+</ul>
+<h1 id="表达式"><a href="#表达式" class="headerlink" title="表达式"></a>表达式</h1><ul>
+<li>“++”、”–” 是语句而非表达式</li>
+</ul>
+<pre><code class="golang">b := n++ // syntax error
+if n++ == 1 {} // syntax error
+++n // syntax error
+</code></pre>
+<ul>
+<li>不支持三元操作符 <code>a &gt; b ? a : b</code></li>
+<li>range<ul>
+<li>range 会复制对象</li>
+<li>range 忽略第2个返回值，支持 string/array/slice/map</li>
+</ul>
+</li>
+</ul>
+<h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><blockquote>
+<p>函数是一等公民(javascript名言)</p>
+</blockquote>
+<h2 id="函数类型-函数标识符"><a href="#函数类型-函数标识符" class="headerlink" title="函数类型(函数标识符)"></a>函数类型(函数标识符)</h2><ul>
+<li>相同的函数类型和函数标识符：两个函数形式参数列表和返回值列表中的变量类型一一对应。</li>
+<li>形参和返回值的变量名不影响函数标识符。</li>
+</ul>
+<h2 id="形参"><a href="#形参" class="headerlink" title="形参"></a>形参</h2><ul>
+<li>形参名：该形参在函数体中没被引用时，形参名可省略。</li>
+<li>形参类型：具有相同类型的形参，不必为每个形参都写出参数类型，可以用省略参数类型的形式声明。</li>
+<li>没有默认参数值(python有默认参数值的特性)。</li>
+<li>形参是实参的拷贝，实参通过值传递方式赋值。</li>
+<li>实参如果是引用类型(slice, map, pointer, channel, function)，可致函数间接修改实参。</li>
+<li>可变参数<ul>
+<li>参数列表的<strong>最后</strong>一个参数类型之前加上省略符号”…”</li>
+<li>可变参数在函数体中看作为切片</li>
+<li>可以直接将切片作为实参传递给可变参数函数，但需要在实参后加上省略号”…”</li>
+</ul>
+</li>
+</ul>
+<pre><code class="golang">func sum(vals...int) int {
+   // ...
+}
+
+values := []int{1, 2, 3, 4}
+fmt.Println(sum(values...)) // slice as real argument for Variadic Functions 
+</code></pre>
+<h2 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h2><ul>
+<li>若返回值有显式的变量名，函数的return语句可以省略操作数(bare return)。bare return可以减少代码的重复，但是某些场景使得代码难以被理解，不宜过度使用。</li>
+<li>支持多返回值(类似python的多返回值特性)<ul>
+<li>多返回值的设计，使得可预料、可控制的错误得到良好的处理，而不用像那些将错误看作是异常的语言那样子通过抛/捕异常的方式来处理。</li>
+</ul>
+</li>
+<li>调用者可以通过<code>_</code>(空标识符，blank identifier)忽略没用的返回值。</li>
+</ul>
+<h2 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h2><ul>
+<li>函数的形参和有名返回值作为函数最外层的局部变量，被存储在相同的词法块中。</li>
+</ul>
+<h2 id="函数体"><a href="#函数体" class="headerlink" title="函数体"></a>函数体</h2><ul>
+<li>标准库中没有函数体的函数声明，该函数可能是native方法，不是以Go实现的。</li>
+<li>Go中大部分函数的代码结构几乎相同<ul>
+<li>首先是一系列的初始检查，防止错误发生，之后是函数的实际逻辑。</li>
+</ul>
+</li>
+</ul>
+<h2 id="函数值-Function-Value-Closures-闭包"><a href="#函数值-Function-Value-Closures-闭包" class="headerlink" title="函数值(Function Value, Closures(闭包))"></a>函数值(Function Value, Closures(闭包))</h2><ul>
+<li>函数拥有类型，可以被赋值给其他变量，传递给函数，从函数返回。对函数值的调用类似函数调用。</li>
+<li>函数值不可比较，因为函数值除了引用了代码，还记录了状态(闭包)。它只能跟其零值(nil)比，用于作初始值检查。</li>
+</ul>
+<h3 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h3><ul>
+<li>闭包：词法闭包(Lexical Closure)的简称，是指引用了自由变量的函数。这个被引用的自由变量将和这个函数一同存在，即使已经离开了创造它的环境也不例外。所以，有另一种说法认为闭包是由函数和与其相关的引用环境组合而成的实体。当函数离开创建环境后，依然持有其上下状态。</li>
+<li>闭包中引用的是自由变量的内存地址，而不是某一刻的值，这些自由变量以及其引用的对象并没有被释放。</li>
+<li>更多闭包与作用域的知识，可参考javascipt的书<a href="https://github.com/getify/You-Dont-Know-JS">You-Dont-Know-JS</a>或其<a href="https://maximdenisov.gitbooks.io/you-don-t-know-js/content/" target="_blank" rel="noopener">gitbook</a>，概念相通。</li>
+</ul>
+<h2 id="匿名函数-Anonymous-Function"><a href="#匿名函数-Anonymous-Function" class="headerlink" title="匿名函数(Anonymous Function)"></a>匿名函数(Anonymous Function)</h2><ul>
+<li>通过函数字面量(function literal)定义</li>
+<li>匿名函数可以访问完整的词法作用域。</li>
+</ul>
+<h2 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h2><ul>
+<li>Deferred Function<ul>
+<li>包含该defer语句的函数执行完毕时，defer后的函数会在在释放堆栈信息之前被执行。</li>
+<li>defer语句采用压栈方式，执行顺序与声明顺序相反。</li>
+</ul>
+</li>
+<li>panic(err)<ul>
+<li>panic函数接受任何值做输入参数，作为某种错误信息，以panic value的形式输出到日志。</li>
+<li>panic会引起程序的崩溃，一般用于严重错误。</li>
+</ul>
+</li>
+<li>recover()<ul>
+<li>recover会使程序从panic中恢复，并返回panic value。</li>
+</ul>
+</li>
+</ul>
+<h1 id="控制流"><a href="#控制流" class="headerlink" title="控制流"></a>控制流</h1><ul>
+<li>for<ul>
+<li>Go语言只有关键字<code>for</code>用于循环</li>
+</ul>
+</li>
+</ul>
+<pre><code class="golang">for i:=1; i &lt; 10; i++ {
+   //doSomething()
+}
+
+// while
+for i &lt; 10 {
+   //doSomething()
+   i += 1
+
+}
+
+// death-loop
+for {
+
+}
+</code></pre>
+<ul>
+<li>if<ul>
+<li>if 可以在条件之前执行一个简单的语句</li>
+</ul>
+</li>
+</ul>
+<pre><code class="golang">if err := WaitForServer(url); err != nil {
+    log.Fatalf(&quot;Site is down: %v\n&quot;, err)
+}
+</code></pre>
+<ul>
+<li>switch<ul>
+<li>与C，Java不同，默认匹配的分支会自动终止，无须<code>break</code>，想贯穿的话，显式地在分支加fallthrough语句</li>
+</ul>
+</li>
+</ul>
+<h1 id="调试相关"><a href="#调试相关" class="headerlink" title="调试相关"></a>调试相关</h1><ul>
+<li>fmt.Printf</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">format</th>
+<th style="text-align:center">example</th>
+<th style="text-align:center">output</th>
+<th style="text-align:center">note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">%T</td>
+<td style="text-align:center">fmt.Printf(“i is of type %T\n”, i)</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">print type of variable/function</td>
+</tr>
+<tr>
+<td style="text-align:center">%#v</td>
+<td style="text-align:center">fmt.Printf(“%#v\n”, w)</td>
+<td style="text-align:center">Wheel{Circle:Circle{Point:Point{X:42, Y:8}, Radius:5}, Spokes:20}</td>
+<td style="text-align:center"># - print every member with name in struct</td>
+</tr>
+<tr>
+<td style="text-align:center">%p</td>
+<td style="text-align:center">fmt.Printf(“%p\n”, p)</td>
+<td style="text-align:center">0x2101ef018</td>
+<td style="text-align:center">print pointer address</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Deferred Function<ul>
+<li>调试复杂程序时，defer机制可用于记录何时进入和退出函数，以及记录输入参数以及返回值。</li>
+</ul>
+</li>
+</ul>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a href="https://books.studygolang.com/gopl-zh/" target="_blank" rel="noopener">Go语言圣经(中文版)</a><ul>
+<li><a href="https://docs.hacknode.org/gopl-zh/" target="_blank" rel="noopener">https://docs.hacknode.org/gopl-zh/</a></li>
+</ul>
+</li>
+<li><a href="http://gopl.io" target="_blank" rel="noopener">Go语言圣经英文版-gopl</a><ul>
+<li><a href="https://www.safaribooksonline.com/library/view/the-go-programming/9780134190570/" target="_blank" rel="noopener">英文版在线</a></li>
+</ul>
+</li>
+<li>Go语言圣经中文版-github<ul>
+<li><a href="https://github.com/golang-china/gopl-zh">https://github.com/golang-china/gopl-zh</a></li>
+<li><a href="https://github.com/gopl-zh/gopl-zh.github.com">源文件构建离线版本</a></li>
+</ul>
+</li>
+<li><a href="https://github.com/qyuhen/book">雨痕-Go学习笔记第四版</a></li>
+</ol>
+</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:litreily@163.com">Kasper Deng</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2018/01/06/2018-01-06-Golang-Notes/">http://github.com/kasperdeng/2018/01/06/2018-01-06-Golang-Notes/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="http://github.com/kasperdeng">Kasper Deng的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/golang/">golang</a></span></div></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="prev" href="/2018/01/18/2018-01-18-zabbix-jmx/">&lt; zabbix jmx</a><a class="next" href="/2017/03/16/2017-03-16-zabbix-ha-on-aws/">zabbix HA on AWS &gt;</a></div></section><footer><p>Copyright © 2016 - 2019 <a href="/." rel="nofollow">Kasper's Blog</a> | <strong><a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></strong><br><span id="busuanzi_container_site_uv"><i class="fa fa-user"></i><span id="busuanzi_value_site_uv"></span></span> <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_site_pv"></span></span> | Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a>Theme with<a rel="nofollow" target="_blank" href="https://github.com/litreily/snark-hexo"> snark.</a></p></footer></div></div></div><script type="text/javascript" src="/plugins/prettify/prettify.js"></script><script type="text/javascript" src="/js/search.js"></script><script type="text/javascript" src="/js/top.js"></script><script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script>var search_path = 'search.xml';
+if (search_path.length == 0) {
+    search_path = 'search.xml';
+}
+var path = '/' + search_path;
+searchFunc(path, 'local-search-input', 'local-search-result');
+</script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.1" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.css"></body></html>

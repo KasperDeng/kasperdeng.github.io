@@ -1,0 +1,100 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><meta name="theme-color" content="#2d4356"><meta name="baidu-site-verification"><title>go commands | Kasper's Wiki</title><link rel="stylesheet" type="text/css" href="/css/style.css"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.png"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script><meta name="generator" content="Hexo 4.2.0"></head><link rel="stylesheet" type="text/css" href="/plugins/prettify/doxy.css"><script type="text/javascript" src="/js/ready.js" async></script><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><body class="night"><div class="mobile-head" id="mobile-head"><div class="navbar-icon"><span></span><span></span><span></span></div><div class="navbar-title"><a href="/">Kasper Deng</a></div><div class="navbar-search"><!--= show a circle here--></div></div><div class="h-wrapper" id="menu"><nav class="h-head box"><div class="m-hdimg"><a class="hdimg img" href="/"><img class="nofancybox" src="/img/Turkey.png" width="128" height="128"></a><h1 class="ttl"><a href="/">Kasper's Wiki</a></h1></div><p class="m-desc">They're both convinced that a sudden passion joined them. Such certainty is beautiful, but uncertainty is more beautiful still.</p><div class="m-nav"><ul><li><span class="dot">●</span><a href="/archives/">archives</a></li><li><span class="dot">●</span><a href="/categories/">Categories</a></li><li><span class="dot">●</span><a href="/tags/">Tags</a></li><li><span class="dot">●</span><a href="/about/">About</a></li><li><span class="dot">●</span><a href="/atom.xml">RSS</a></li><li class="m-sch"><form class="form" id="j-formsch" method="get"><!--input(type="text" id="local-search-input" name="q" class="txt" value="搜索" onfocus="if(this.value=='搜索'){this.value='';}" onblur="if(this.value==''){this.value='搜索';}")--><input class="txt" type="text" id="local-search-input" name="q" value="搜索" onfocus="if(this.value=='搜索'){this.value='';}" onblur="if(this.value==''){this.value='Search';}"><input type="text" style="display:none;"></form></li></ul><div id="local-search-result"></div></div></nav></div><div id="back2Top"><a class="fa fa-arrow-up" title="Back to top" href="#"></a></div><div class="box" id="container"><div class="l-wrapper"><div class="l-content box"><div class="l-post l-post-art"><article class="p-art"><div class="p-header box"><h1 class="p-title">go commands</h1><div class="p-info"><span class="p-date"><i class="fa fa-calendar"></i><a href="/2015/02/15/GoCommands/">2015-02-15</a></span><span class="p-view" id="busuanzi_container_page_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_page_pv"></span></span></div></div><div class="p-content"><h1 id="go-build"><a href="#go-build" class="headerlink" title="go build"></a>go build</h1><ul>
+<li><p>compile the package named by the import paths and thier dependencies</p>
+</li>
+<li><p>go build package/*.go</p>
+<ul>
+<li><p>if build *.go, a virtual package command-line-arguments is created internally</p>
+<ul>
+<li><p>$WORK/command-line-arguments/_obj/: stores the obj files</p>
+</li>
+<li><p>$WORK/command-line-arguments/_obj/exe/: stores the executable after link</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>-v - work</code>: print the name of the temporary work directory and do not delete it when exiting</p>
+</li>
+<li><p><code>-n</code>: print the commands but do not run them</p>
+</li>
+<li><p><code>-x</code>: as the <code>-n</code> flag but run them</p>
+</li>
+</ul>
+<h1 id="go-install"><a href="#go-install" class="headerlink" title="go install"></a>go install</h1><ul>
+<li><p>compile and install the package and its dependent package. The result is archive/executable and installed to $GOBIN dir</p>
+</li>
+<li><p>If $GOBIN not set, error promption: <code>go install: no install location for directory</code></p>
+</li>
+<li><p><code>-o</code> flag currently is not acceptable for go install</p>
+</li>
+<li><p>go install only accepts *.go of cmd/executable src code, not *.go of lib src code. To install libs, need run <code>go install package</code> </p>
+</li>
+</ul>
+<h1 id="go-get"><a href="#go-get" class="headerlink" title="go get"></a>go get</h1><ul>
+<li>download/update specific package or their dependencies</li>
+<li><code>-d</code>: only download the source code, no package installation</li>
+<li><code>-u</code>: update the named packages and their depenencies</li>
+<li><code>-fix</code>: for backword compatible</li>
+</ul>
+<h1 id="go-list"><a href="#go-list" class="headerlink" title="go list"></a>go list</h1><blockquote>
+<p>list package information</p>
+</blockquote>
+<ul>
+<li>go list -json package: print the package strcuture in json format</li>
+<li>text/template syntax<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">go list -f &#123;&#123;.ImportPath&#125; package</span><br><span class="line">go list -f &#123;&#123;.S.F&#125;&#125; package</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ go list -json net/http</span><br><span class="line">$ go list -json github.com/kasperdeng/grpcPt/client</span><br></pre></td></tr></table></figure>
+
+<h1 id="go-test"><a href="#go-test" class="headerlink" title="go test"></a>go test</h1><blockquote>
+<p>test *_test.go</p>
+</blockquote>
+<ul>
+<li><code>go help testflag</code></li>
+<li><code>-i</code>: install the test dependencies, but not compile and run it</li>
+<li><code>-c</code>: generate test executables, but not run it</li>
+<li><code>-bench regexp</code> 执行相应的benchmarks，例如 -bench=.</li>
+<li><code>-cover</code> 开启测试覆盖率</li>
+<li><code>-run regexp</code> 只运行regexp匹配的函数，例如 -run=Array 执行包含有Array开头的函数</li>
+</ul>
+<h1 id="godoc"><a href="#godoc" class="headerlink" title="godoc"></a>godoc</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ go get golang.org/x/tools/cmd/godoc</span><br><span class="line">$ godoc -http=:8080 &amp;</span><br><span class="line"><span class="comment"># godoc package</span></span><br><span class="line">$ godoc net/http</span><br><span class="line"><span class="comment"># godoc func</span></span><br><span class="line">$ godoc fmt Printf</span><br></pre></td></tr></table></figure>
+
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul>
+<li><a href="https://github.com/hyper-carrot/go_command_tutorial/blob/master/catalog.md" target="_blank" rel="noopener">Go Command Turorial</a></li>
+<li><a href="http://wiki.jikexueyuan.com/project/go-command-tutorial/" target="_blank" rel="noopener">极客学院 - GO 命令教程</a></li>
+<li><a href="https://astaxie.gitbooks.io/build-web-application-with-golang/zh/01.3.html" target="_blank" rel="noopener">astaxie - GO命令</a></li>
+</ul>
+</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:litreily@163.com">Kasper Deng</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2015/02/15/GoCommands/">http://kasperdeng.github.io/2015/02/15/GoCommands/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="http://kasperdeng.github.io">Kasper Deng的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/golang/">golang</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#go-build"><span class="toc-number">1.</span> <span class="toc-text">go build</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#go-install"><span class="toc-number">2.</span> <span class="toc-text">go install</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#go-get"><span class="toc-number">3.</span> <span class="toc-text">go get</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#go-list"><span class="toc-number">4.</span> <span class="toc-text">go list</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#go-test"><span class="toc-number">5.</span> <span class="toc-text">go test</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#godoc"><span class="toc-number">6.</span> <span class="toc-text">godoc</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">7.</span> <span class="toc-text">Reference</span></a></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="prev" href="/2015/04/15/go-dev-env/">&lt; Golang Development Environment</a><a class="next" href="/2015/02/08/ConstantPoolInJavaPythonGoJS/">constant pool in Java/Python/Go/Javascript &gt;</a></div><div id="valine-comment"><style type="text/css">.night .v[data-class=v] a { color: #0F9FB4 !important; }
+.night .v[data-class=v] a:hover { color: #216C73 !important; }
+.night .v[data-class=v] li { list-style: inherit; }
+.night .v[data-class=v] .vwrap { border: 1px solid #223441; border-radius: 0; }
+.night .v[data-class=v] .vwrap:hover { box-shadow: 0 0 6px 1px #223441; }
+.night .v[data-class=v] .vbtn { border-radius: 0; background: none; }
+.night .v[data-class=v] .vlist .vcard .vh { border-bottom-color: #293D4E; }
+.night .v[data-class=v] .vwrap .vheader .vinput { border-bottom-color: #223441; }
+.night .v[data-class=v] .vwrap .vheader .vinput:focus { border-bottom-color: #339EB4; }
+.night .v[data-class=v] code, .night .v[data-class=v] pre,.night .v[data-class=v] .vlist .vcard .vhead .vsys { background: #203240 !important; }
+.night .v[data-class=v] code, .night .v[data-class=v] pre { color: #F0F0F0; font-size: 95%; }
+.v[data-class=v] .vcards .vcard .vh {border-bottom-color: #223441; }
+.night .v[data-class=v] .vcards .vcard .vcontent.expand:before {background: linear-gradient(180deg,rgba(38,57,73,.4),rgba(38,57,73,.9));}
+.night .v[data-class=v] .vcards .vcard .vcontent.expand:after {background: rgba(38,57,73,.9)}
+</style><div id="vcomment"></div><script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script><script>var notify = 'false' == true ? true : false;
+var verify = 'false' == true ? true : false;
+var GUEST_INFO = ['nick','mail','link'];
+var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+  return GUEST_INFO.indexOf(item) > -1
+});
+guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+window.valine = new Valine({
+  el:'#vcomment',
+  notify:notify,
+  verify:verify,
+  appId:'',
+  appKey:'',
+  lang: 'zh-cn',
+  placeholder:'ヾﾉ≧∀≦)o Come on, say something...',
+  avatar:'identicon',
+  guest_info:guest_info,
+  pageSize:'10'
+})</script></div></section><footer><p>Copyright © 2016 - 2021 <a href="/." rel="nofollow">Kasper's Wiki</a> | <strong><a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></strong><br><span id="busuanzi_container_site_uv"><i class="fa fa-user"></i><span id="busuanzi_value_site_uv"></span></span> <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_site_pv"></span></span> | Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a>Theme with<a rel="nofollow" target="_blank" href="https://github.com/litreily/snark-hexo"> snark.</a></p></footer></div></div></div><script type="text/javascript" src="/plugins/prettify/prettify.js"></script><script type="text/javascript" src="/js/search.js"></script><script type="text/javascript" src="/js/top.js"></script><script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script type="text/javascript" src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.1" async></script></body></html>

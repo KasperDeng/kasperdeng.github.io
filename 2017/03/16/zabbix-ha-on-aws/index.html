@@ -1,0 +1,133 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><meta name="theme-color" content="#2d4356"><meta name="baidu-site-verification"><title>zabbix HA on AWS | Kasper's Wiki</title><link rel="stylesheet" type="text/css" href="/css/style.css"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.png"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script><meta name="generator" content="Hexo 4.2.0"></head><link rel="stylesheet" type="text/css" href="/plugins/prettify/doxy.css"><script type="text/javascript" src="/js/ready.js" async></script><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><body class="night"><div class="mobile-head" id="mobile-head"><div class="navbar-icon"><span></span><span></span><span></span></div><div class="navbar-title"><a href="/">Kasper Deng</a></div><div class="navbar-search"><!--= show a circle here--></div></div><div class="h-wrapper" id="menu"><nav class="h-head box"><div class="m-hdimg"><a class="hdimg img" href="/"><img class="nofancybox" src="/img/Turkey.png" width="128" height="128"></a><h1 class="ttl"><a href="/">Kasper's Wiki</a></h1></div><p class="m-desc">They're both convinced that a sudden passion joined them. Such certainty is beautiful, but uncertainty is more beautiful still.</p><div class="m-nav"><ul><li><span class="dot">●</span><a href="/archives/">archives</a></li><li><span class="dot">●</span><a href="/categories/">Categories</a></li><li><span class="dot">●</span><a href="/tags/">Tags</a></li><li><span class="dot">●</span><a href="/about/">About</a></li><li><span class="dot">●</span><a href="/atom.xml">RSS</a></li><li class="m-sch"><form class="form" id="j-formsch" method="get"><!--input(type="text" id="local-search-input" name="q" class="txt" value="搜索" onfocus="if(this.value=='搜索'){this.value='';}" onblur="if(this.value==''){this.value='搜索';}")--><input class="txt" type="text" id="local-search-input" name="q" value="搜索" onfocus="if(this.value=='搜索'){this.value='';}" onblur="if(this.value==''){this.value='Search';}"><input type="text" style="display:none;"></form></li></ul><div id="local-search-result"></div></div></nav></div><div id="back2Top"><a class="fa fa-arrow-up" title="Back to top" href="#"></a></div><div class="box" id="container"><div class="l-wrapper"><div class="l-content box"><div class="l-post l-post-art"><article class="p-art"><div class="p-header box"><h1 class="p-title">zabbix HA on AWS</h1><div class="p-info"><span class="p-date"><i class="fa fa-calendar"></i><a href="/2017/03/16/zabbix-ha-on-aws/">2017-03-16</a></span><span class="p-view" id="busuanzi_container_page_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_page_pv"></span></span></div></div><div class="p-content"><h1 id="Zabbix-HA-Requirment"><a href="#Zabbix-HA-Requirment" class="headerlink" title="Zabbix HA Requirment"></a>Zabbix HA Requirment</h1><ul>
+<li>On AWS</li>
+<li>两台Zabbix Server, 在AWS上，处于一个VPC，但分别处在两个不同的AZ。</li>
+<li>Active-Passive mode. 原因：zabbix server 自身有一套external scrips 去AWS cloudwatch 获取AWS service metrics。<br>如果是采用Active-Active的方式的，两台Active Zabbix server会造成数据冗余或冲突。</li>
+</ul>
+<h1 id="HA-Implementation"><a href="#HA-Implementation" class="headerlink" title="HA Implementation"></a>HA Implementation</h1><h2 id="Decouple-Zabbix-Database"><a href="#Decouple-Zabbix-Database" class="headerlink" title="Decouple Zabbix Database"></a>Decouple Zabbix Database</h2><ul>
+<li>Zabbix存储的数据库需要解耦出来，方便Zabbix Server主从切换，保持数据存储的唯一性。</li>
+<li>对于Zabbix server来说，最重要的就是监控的数据。在AWS上，最方便的方式就是采用AWS的RDS作为Zabbix的后端数据库，利用AWS的服务。</li>
+<li>AWS上RDS比较强大，有MySQL, MariaDB和Postgresql可供选择。为了HA方案在别的云平台上的可重用性，选择Postgresql最为后端数据库。</li>
+</ul>
+<h3 id="RDS-Setup"><a href="#RDS-Setup" class="headerlink" title="RDS Setup"></a>RDS Setup</h3><ul>
+<li>启用RDS前，设置好master-user-name和master-user-password</li>
+<li>选择RDS的Multi-AZ功能。备份，维护按需设置。</li>
+<li>估算好检测数据所需的数据库容量大小，选择对应的DB实例类型 (e.g. db.m4.large)</li>
+<li>更新RDS的security group的设置，保证与zabbix的连通性。</li>
+</ul>
+<h3 id="MariaDB"><a href="#MariaDB" class="headerlink" title="MariaDB"></a>MariaDB</h3><ul>
+<li>Verify connection</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -h &lt;RDS-DNS&gt; -P 3306 -u &lt;RDS-master-user-name&gt; -p</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>yum install -y mariadb</code> which use its client to connect RDS</li>
+<li><code>setsebool -P httpd_can_network_connect_db=1</code> and <code>setsebool -P zabbix_can_network=1</code></li>
+</ul>
+<h3 id="Postgres"><a href="#Postgres" class="headerlink" title="Postgres"></a>Postgres</h3><ul>
+<li>Verify connection</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">psql \</span><br><span class="line">   --host=occ-&lt;rds instance DNS name&gt; \</span><br><span class="line">   --port=5432 \</span><br><span class="line">   --username &lt;username&gt; \</span><br><span class="line">   --password</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>yum install -y postgresql</code></li>
+</ul>
+<ul>
+<li><code>setsebool -P httpd_can_network_connect_db=1</code> and <code>setsebool -P zabbix_can_network=1</code></li>
+</ul>
+<h2 id="AWS-ELB"><a href="#AWS-ELB" class="headerlink" title="AWS ELB"></a>AWS ELB</h2><p>在AWS上，zabbix service是通过AWS ELB来发现后端哪个Zone上的Zabbix server处于服务状态。</p>
+<ul>
+<li><p>端口Health-Check：</p>
+<ul>
+<li>external ELB:<ul>
+<li>80 (apache)</li>
+<li>3000 (grafana)</li>
+</ul>
+</li>
+<li>internal ELB: 10051 (用于zabbix-agent上报指标)</li>
+</ul>
+</li>
+<li><p><strong>NOTE</strong>: 在AWS上不能通过VIP来做，因为AWS上不支持传播<code>多播包 multicast packet</code></p>
+</li>
+</ul>
+<h2 id="Pacemaker"><a href="#Pacemaker" class="headerlink" title="Pacemaker"></a>Pacemaker</h2><p>通过pacemaker（foss, scalable HA cluster resource manager）来提供HA的功能。</p>
+<ul>
+<li><p>具体安装，大体配置步骤，请参考 <a href="https://ericsysmin.com/2016/02/18/configuring-high-availability-ha-zabbix-server-on-centos-7/" target="_blank" rel="noopener">Configuring High Availability (HA) Zabbix Server on CentOS 7</a>， 本文不累赘，但注意以下几点：</p>
+</li>
+<li><p>对apache的状态检查，可以通过启用自带的状态模块（built-in module在<code>/usr/lib64/httpd/modules/</code>），配置如下：</p>
+<ul>
+<li>apache httpd status configuration<ul>
+<li>Add <code>LoadModule status_module modules/mod_status.so</code> to <code>/etc/httpd/conf/httpd.conf</code></li>
+<li>Add url handling as below</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># Allow server status reports generated by mod_status,</span><br><span class="line"># with the URL of http://servername/server-status</span><br><span class="line"># Change the ".example.com" to match your domain to enable.</span><br><span class="line">#</span><br><span class="line"><span class="tag">&lt;<span class="name">Location</span> /<span class="attr">server-status</span>&gt;</span></span><br><span class="line">    SetHandler server-status</span><br><span class="line">    Order deny,allow</span><br><span class="line">    Deny from all</span><br><span class="line">    Allow from all</span><br><span class="line"><span class="tag">&lt;/<span class="name">Location</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在pacemaker里面创建资源</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pcs resource create zabbix_server systemd:zabbix-server op monitor interval=10s</span><br><span class="line">pcs resource create zabbix_httpd systemd:httpd configfile=/etc/httpd/conf/httpd.conf statusurl="http://127.0.0.1/server-status" op monitor interval=20s</span><br><span class="line">pcs resource create grafana_server systemd:grafana-server op monitor interval=10s</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在pacemaker里面把3个resources(zabbix, apache, grafana)组成创建资源组</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pcs resource group add zabbixcluster zabbix_server zabbix_httpd</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在AWS上注意网络连通性问题，尤其当用<code>pcs status</code>看到集群状态不对的时候。检查下<code>security group</code>里面以下端口是否开放了。<ul>
+<li>UDP 5405: corosync 用于集群状态检查</li>
+</ul>
+</li>
+</ul>
+<p><img src="http://www.plantuml.com/plantuml/png/XP7BReCm44Nt_eeHsQGB8hKV40cQgfj4GicgYLWCC11KQaUs6_fG_hq6Ex6LjEe25lVSWMCF5nL1zBHCesy6q79DiiQIOA_rWPqOarHgv4rdIfd9L_XA4XxNgmY6FX-djrWKxKSAWaEoZLEOPgXKUwGxMmAe9RwPtjVOYylkNPdVF4GmUPRqwJe0EyUB762oQRiZoJF10vPx-eqq4claEA2Gd9XzGi742IOmJKhzhz-zyLjYpuqZyHj975H6z49T9_ehqx_mMTVm6soTpPrNgB50POpMYurpT8gPKBgHf28lP0-tI7C6RfvT91lYEeSudjjzxWefUaKoY8ONn9NekKdyuQvohst1R3OFrXLaVXqikAdX4rupsFCuSo4_" alt="zabbix-ha-on-aws"></p>
+<h1 id="MISC"><a href="#MISC" class="headerlink" title="MISC"></a>MISC</h1><ul>
+<li>config files:<ul>
+<li><code>/etc/corosync/corosync.conf</code></li>
+<li><code>/var/lib/pcsd/pcs_settings.conf</code></li>
+</ul>
+</li>
+<li>logs<ul>
+<li><code>/var/log/pacemaker.log</code></li>
+<li><code>/var/log/cluster/corosync.log</code></li>
+<li><code>/var/log/pcsd/pcsd.log</code></li>
+</ul>
+</li>
+</ul>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul>
+<li><a href="http://clusterlabs.org/" target="_blank" rel="noopener">PaceMaker</a></li>
+<li><a href="https://ericsysmin.com/2016/02/18/configuring-high-availability-ha-zabbix-server-on-centos-7/" target="_blank" rel="noopener">Configuring High Availability (HA) Zabbix Server on CentOS 7</a></li>
+</ul>
+</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:litreily@163.com">Kasper Deng</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2017/03/16/zabbix-ha-on-aws/">http://kasperdeng.github.io/2017/03/16/zabbix-ha-on-aws/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="http://kasperdeng.github.io">Kasper Deng的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tags"></i><a href="/tags/zabbix/">zabbix</a><a href="/tags/devops/">devops</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Zabbix-HA-Requirment"><span class="toc-number">1.</span> <span class="toc-text">Zabbix HA Requirment</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#HA-Implementation"><span class="toc-number">2.</span> <span class="toc-text">HA Implementation</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Decouple-Zabbix-Database"><span class="toc-number">2.1.</span> <span class="toc-text">Decouple Zabbix Database</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RDS-Setup"><span class="toc-number">2.1.1.</span> <span class="toc-text">RDS Setup</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MariaDB"><span class="toc-number">2.1.2.</span> <span class="toc-text">MariaDB</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Postgres"><span class="toc-number">2.1.3.</span> <span class="toc-text">Postgres</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AWS-ELB"><span class="toc-number">2.2.</span> <span class="toc-text">AWS ELB</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pacemaker"><span class="toc-number">2.3.</span> <span class="toc-text">Pacemaker</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MISC"><span class="toc-number">3.</span> <span class="toc-text">MISC</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="prev" href="/2018/01/06/Golang-Notes/">&lt; 《go语言圣经》读书笔记</a><a class="next" href="/2017/03/06/ProductionDevOps/">DevOps on Production &gt;</a></div><div id="valine-comment"><style type="text/css">.night .v[data-class=v] a { color: #0F9FB4 !important; }
+.night .v[data-class=v] a:hover { color: #216C73 !important; }
+.night .v[data-class=v] li { list-style: inherit; }
+.night .v[data-class=v] .vwrap { border: 1px solid #223441; border-radius: 0; }
+.night .v[data-class=v] .vwrap:hover { box-shadow: 0 0 6px 1px #223441; }
+.night .v[data-class=v] .vbtn { border-radius: 0; background: none; }
+.night .v[data-class=v] .vlist .vcard .vh { border-bottom-color: #293D4E; }
+.night .v[data-class=v] .vwrap .vheader .vinput { border-bottom-color: #223441; }
+.night .v[data-class=v] .vwrap .vheader .vinput:focus { border-bottom-color: #339EB4; }
+.night .v[data-class=v] code, .night .v[data-class=v] pre,.night .v[data-class=v] .vlist .vcard .vhead .vsys { background: #203240 !important; }
+.night .v[data-class=v] code, .night .v[data-class=v] pre { color: #F0F0F0; font-size: 95%; }
+.v[data-class=v] .vcards .vcard .vh {border-bottom-color: #223441; }
+.night .v[data-class=v] .vcards .vcard .vcontent.expand:before {background: linear-gradient(180deg,rgba(38,57,73,.4),rgba(38,57,73,.9));}
+.night .v[data-class=v] .vcards .vcard .vcontent.expand:after {background: rgba(38,57,73,.9)}
+</style><div id="vcomment"></div><script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script><script>var notify = 'false' == true ? true : false;
+var verify = 'false' == true ? true : false;
+var GUEST_INFO = ['nick','mail','link'];
+var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+  return GUEST_INFO.indexOf(item) > -1
+});
+guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+window.valine = new Valine({
+  el:'#vcomment',
+  notify:notify,
+  verify:verify,
+  appId:'',
+  appKey:'',
+  lang: 'zh-cn',
+  placeholder:'ヾﾉ≧∀≦)o Come on, say something...',
+  avatar:'identicon',
+  guest_info:guest_info,
+  pageSize:'10'
+})</script></div></section><footer><p>Copyright © 2016 - 2021 <a href="/." rel="nofollow">Kasper's Wiki</a> | <strong><a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></strong><br><span id="busuanzi_container_site_uv"><i class="fa fa-user"></i><span id="busuanzi_value_site_uv"></span></span> <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_site_pv"></span></span> | Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a>Theme with<a rel="nofollow" target="_blank" href="https://github.com/litreily/snark-hexo"> snark.</a></p></footer></div></div></div><script type="text/javascript" src="/plugins/prettify/prettify.js"></script><script type="text/javascript" src="/js/search.js"></script><script type="text/javascript" src="/js/top.js"></script><script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script type="text/javascript" src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.1" async></script></body></html>

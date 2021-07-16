@@ -1,0 +1,238 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><meta name="theme-color" content="#2d4356"><meta name="baidu-site-verification"><title>zabbix | Kasper's Wiki</title><link rel="stylesheet" type="text/css" href="/css/style.css"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.png"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script><meta name="generator" content="Hexo 4.2.0"></head><link rel="stylesheet" type="text/css" href="/plugins/prettify/doxy.css"><script type="text/javascript" src="/js/ready.js" async></script><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><body class="night"><div class="mobile-head" id="mobile-head"><div class="navbar-icon"><span></span><span></span><span></span></div><div class="navbar-title"><a href="/">Kasper Deng</a></div><div class="navbar-search"><!--= show a circle here--></div></div><div class="h-wrapper" id="menu"><nav class="h-head box"><div class="m-hdimg"><a class="hdimg img" href="/"><img class="nofancybox" src="/img/Turkey.png" width="128" height="128"></a><h1 class="ttl"><a href="/">Kasper's Wiki</a></h1></div><p class="m-desc">They're both convinced that a sudden passion joined them. Such certainty is beautiful, but uncertainty is more beautiful still.</p><div class="m-nav"><ul><li><span class="dot">●</span><a href="/archives/">archives</a></li><li><span class="dot">●</span><a href="/categories/">Categories</a></li><li><span class="dot">●</span><a href="/tags/">Tags</a></li><li><span class="dot">●</span><a href="/about/">About</a></li><li><span class="dot">●</span><a href="/atom.xml">RSS</a></li><li class="m-sch"><form class="form" id="j-formsch" method="get"><!--input(type="text" id="local-search-input" name="q" class="txt" value="搜索" onfocus="if(this.value=='搜索'){this.value='';}" onblur="if(this.value==''){this.value='搜索';}")--><input class="txt" type="text" id="local-search-input" name="q" value="搜索" onfocus="if(this.value=='搜索'){this.value='';}" onblur="if(this.value==''){this.value='Search';}"><input type="text" style="display:none;"></form></li></ul><div id="local-search-result"></div></div></nav></div><div id="back2Top"><a class="fa fa-arrow-up" title="Back to top" href="#"></a></div><div class="box" id="container"><div class="l-wrapper"><div class="l-content box"><div class="l-post l-post-art"><article class="p-art"><div class="p-header box"><h1 class="p-title">zabbix</h1><div class="p-info"><span class="p-date"><i class="fa fa-calendar"></i><a href="/2016/09/19/zabbix/">2016-09-19</a></span><span class="p-view" id="busuanzi_container_page_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_page_pv"></span></span></div></div><div class="p-content"><h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>在devops的世界，监控比自动化更加的重要。好的监控工具辅助，自然事半功倍，而监控工具可谓百家争鸣。</p>
+<ul>
+<li>有免费开源：<a href="https://www.nagios.org/" target="_blank" rel="noopener">nagios</a>, <a href="http://www.opennms.org/en" target="_blank" rel="noopener">OpenNMS</a></li>
+<li>商业开源：<a href="http://www.zabbix.org/" target="_blank" rel="noopener">zabbix</a></li>
+<li>免费不开源：<a href="http://cloudinsight.oneapm.com/" target="_blank" rel="noopener">cloud insight</a></li>
+<li>SasS-based：<a href="https://www.datadoghq.com" target="_blank" rel="noopener">Datadog</a>， <a href="https://www.hostedgraphite.com/" target="_blank" rel="noopener">Hosted Graphite</a></li>
+</ul>
+<p>当然了，有能力、人力、财力，也可以按照 <code>statsd/collectd + graphite/influxDB/openTSDB + grafana</code>的模式构建自己的监控系统，其实很多初创团队利用这些免费开源的工具构造一体化(all in one)的免费不开源/提供企业收费服务的工具。</p>
+<p>zabbix是一款开源的网络及应用监控的工具，愿景是给业界提供高级的监控管理方案。最早发布于2001年，2005年成立专职公司为企业级客户提供强大的技术支持。<br>是一款可靠的监控工具，方便devops团队的高效协助与沟通，数据的可视化效果，告警的方式，丰富的apis可用于自动化运维。<br>社区与论坛活跃，强大，<a href="http://www.zabbix.org/wiki/Main_Page" target="_blank" rel="noopener">wiki</a>资源丰富。<br>国内有不少选其作为监控的方案，唯品会，京东，PPTV。</p>
+<p>不过，正如<code>esty</code>所说，一切监控软件最后都发展成又一个nagios。所以寻找当下最合适的就好了。</p>
+<ul>
+<li>特点<ul>
+<li>分布式监控</li>
+<li>自动发现功能(LLD - Low-level discovery)<ul>
+<li>discovery of file systems (vfs.fs.discovery)</li>
+<li>discovery of network interfaces (net.if.discovery)</li>
+<li>discovery of CPUs and CPU cores (system.cpu.discovery)</li>
+<li>discovery of SNMP OIDs (discovery[oid1, oid2, …,])</li>
+<li>discovery using ODBC SQL queries (db.odbc.discovery[<description>,<dsn>])</li>
+<li>discovery of Windows services (service.discovery)</li>
+</ul>
+</li>
+<li>监控方式：agentd, snmp, jmx, impi</li>
+<li>告警机制，趋势预测，预警故障</li>
+<li>模板式定义需采集的测量值，支持宏定义</li>
+<li><strong><a href="http://www.zabbix.org/wiki/Docs/api/libraries" target="_blank" rel="noopener">丰富的api</a></strong> 给自动化运维和二次开发提供了强有力的支持</li>
+<li>生态健全，插件丰富，方便对接各种系统和前端展示页面(e.g. grafana)</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>相对graphite, influxDB, openTSDB来说，一切数据是只读的，只是依赖输入的数据做可视化，但不能对数据进行运算（切片，聚合）。</li>
+</ul>
+</li>
+<li>注意事项<ul>
+<li>对弈监控的机器数量或者指标快速增加的场景，一定要考虑接收数据的量,服务端性能(与数据库的交互)，zabbix proxy的数量。力求减轻服务端的压力，避免内存积压。</li>
+</ul>
+</li>
+</ul>
+<p>zabbix是采用C语言实现的，采用的是<code>LAMP(Linux + Apache + MySQL + PHP)</code>的组建方式。</p>
+<p>zabbix最常用的是通过被监控机上运行的agentd进行探针式数据采集，提供了被动方式(passive)和主动方式(active)。基于json格式进行数据传输。</p>
+<ul>
+<li>主动：agent请求server，根据配置的<code>RefreshActiveChecks</code>间隔主动获取监控项列表，并主动将监控项内需要检测的数据提交给server/proxy。</li>
+<li>被动：server向agent请求获取监控项的数据，agent返回数据。</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/KasperDeng/kasperdeng.github.io/master/images/zabbix/zabbix-passive-active.png" alt="zabbix-passive-active"></p>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><ul>
+<li>方式<ul>
+<li>可以选择操作系统的包管理器(支持RedHat7/CentOS7 yum 和 Debian7&amp;8 or Ubuntu 14.04LTS&amp;16.04LTS的apt)，通过官方的repository进行安装。</li>
+<li>通过源码安装。</li>
+<li>对于3.0以上版本，更提供了docker，更加的便捷。</li>
+</ul>
+</li>
+<li><a href="https://www.zabbix.com/documentation/3.2/manual/installation/install_from_packages" target="_blank" rel="noopener">包管理器方式安装</a><ul>
+<li>RedHat/CentOS的包依赖：<ul>
+<li>fping, iksemel, libssh2 packages<ul>
+<li>zabbix官方提供了相关的包，在<a href="http://repo.zabbix.com/non-supported/rhel/7/x86_64/，只针对x64。" target="_blank" rel="noopener">http://repo.zabbix.com/non-supported/rhel/7/x86_64/，只针对x64。</a></li>
+</ul>
+</li>
+<li>安装过程中还发现依赖<code>php-bcmath</code>和<code>php-mbstring</code>，具体小版本，可以根据yum的依赖检查的信息在<a href="http://rpm.pbone.net/搜索下载" target="_blank" rel="noopener">http://rpm.pbone.net/搜索下载</a></li>
+<li>以上的包最方便的方式还是自己建yum repo</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">copy all dependent rpms to ~/repo/packages</span><br><span class="line">shell&gt;yum install -y createrepo</span><br><span class="line">shell&gt;createrepo ~/repo/packages</span><br><span class="line">shell&gt;create zabbix.repo <span class="keyword">in</span> /etc/yum.repo.d/</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[ece-zabbix]</span><br><span class="line">name=ece-zabbix</span><br><span class="line">baseurl=file:///root/repo/</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=0</span><br><span class="line">metadata_expire=0</span><br><span class="line">cost=500</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>PHP版本：zabbix3.0要求PHP 5.4以上版本，不支持PHP7. RedHat6/CentOS6 官方repo只有php5.3.3，需要利用三方源升级到php5.4。<ul>
+<li>RedHat6/CentOS6升级php<ul>
+<li>下载相关的php包（看下面的例子）：<a href="https://repo.webtatic.com/yum/el6/x86_64/" target="_blank" rel="noopener">https://repo.webtatic.com/yum/el6/x86_64/</a> 并用createrepo创建本地的php repo</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum erase php php-bcmath php-cli php-common php-gd php-mbstring php-mysql php-pdo php-xml</span><br><span class="line">yum install php56w php56w-bcmath php56w-cli php56w-common php56w-gd php56w-mbstring php56w-mysql php56w-pdo php56w-xml</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>数据库<ul>
+<li>Zabbix 支持使用MySQL和Postgres</li>
+<li>MySQL-server最好安装5.6以上版本，其他版本性能偏低。</li>
+</ul>
+</li>
+<li>启动服务：出于安全考虑，最好创建<code>zabbix</code>用户和用户组，用来启动server/agent的服务<ul>
+<li><code>systemctl start zabbix-server</code></li>
+<li><code>systemctl start httpd</code></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><a href="https://www.zabbix.com/documentation/3.2/manual/installation/install" target="_blank" rel="noopener">源码安装</a>，基于RedHat<ul>
+<li>依赖工具：</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -7 gcc.x686_64 make.x686_64 mysql-devel.x686_64 libxml2-devel.x686_64 net-snmp-devel.x686_64 libcurl-devel.x686_64</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>php version<ul>
+<li>zabbix 3.0: &gt; PHP5.4</li>
+<li>zabbix 2.2: PHP3</li>
+</ul>
+</li>
+<li>PHP Web Frontend install<ul>
+<li>check whether selinux blocks apache/httpd access<ul>
+<li><code>getenforce</code>/<code>setenforce 0/1</code></li>
+<li><code>getsebool &lt;flagName&gt; or -a</code>/<code>sesebool -P &lt;flagName&gt; &lt;value&gt;</code></li>
+<li>sestatus</li>
+</ul>
+</li>
+<li>check apache/httpd error log <code>/var/log/httpd/error_log</code><ul>
+<li>set <code>LogLevel</code> to <code>debug</code> in <code>/etc/httpd/conf/httpd.conf</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>reference: <a href="http://www.hi-linux.com/2016/03/29/CentOS%206%E4%B8%8B%E5%AE%89%E8%A3%85Zabbix%203.0/" target="_blank" rel="noopener">http://www.hi-linux.com/2016/03/29/CentOS%206%E4%B8%8B%E5%AE%89%E8%A3%85Zabbix%203.0/</a></li>
+<li>源码安装需要自己封一套脚本在<code>/etc/init.d/</code>，可以参考现有的zabbix-server &amp; zabbix-agent的rpm包里面的</li>
+</ul>
+<h1 id="configuration"><a href="#configuration" class="headerlink" title="configuration"></a>configuration</h1><ul>
+<li>zabbix server<ul>
+<li>config location<ul>
+<li>Package Installation: <code>/etc/zabbix/zabbix_server.conf</code></li>
+<li>Source Installation: <code>/usr/local/etc/zabbix_server.conf</code> and <code>/usr/local/etc/zabbix_agentd.conf</code> </li>
+</ul>
+</li>
+<li>主要配置数据库的host，数据库名称，用户名，密码</li>
+</ul>
+</li>
+<li>zabbix frontend<ul>
+<li>主要是用apache，配置在<code>/etc/httpd/conf.d/zabbix.conf</code> </li>
+<li>配置下时区就好了。</li>
+</ul>
+</li>
+<li>zabbix agentd<ul>
+<li>没什么好说的，奉行简单化风格，尽量对被监控机无侵入，已支持重用指标的收集。</li>
+<li>配好zabbix server的地址。</li>
+<li>创建zabbix用户启动agent。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">groupadd zabbix</span><br><span class="line">useradd -g zabbix zabbix</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>theme<ul>
+<li>还是深色的比较炫，比较专业的样子。</li>
+</ul>
+</li>
+<li>screen<ul>
+<li>可以在页面中自定义构建监测视图。</li>
+</ul>
+</li>
+</ul>
+<h1 id="log"><a href="#log" class="headerlink" title="log"></a>log</h1><ul>
+<li>server/agent logs location<ul>
+<li>Package Installation: <code>/var/log/zabbix/</code></li>
+<li>Source Installation: default in <code>/tmp/zabbix_server.log</code>, value is set in <code>/usr/local/etc/zabbix_server.conf</code></li>
+</ul>
+</li>
+<li>apache log in <code>/var/log/httpd/</code></li>
+</ul>
+<h1 id="坑"><a href="#坑" class="headerlink" title="坑"></a>坑</h1><ul>
+<li>zabbix 3.0，官方文档只给出了RedHat7/CentOS7的官方respository。虽然有针对RedHat5/6的repo，但是好像已经deprecated，实际上里面缺少了zabbix-server，zabbix-web。<ul>
+<li><a href="http://repo.zabbix.com/zabbix/3.0/rhel/7/x86_64/" target="_blank" rel="noopener">RHEL7 repo</a></li>
+<li><a href="http://repo.zabbix.com/zabbix/3.0/rhel/6/x86_64/" target="_blank" rel="noopener">RHEL6 repo</a></li>
+<li><a href="http://repo.zabbix.com/zabbix/3.0/rhel/5/x86_64/" target="_blank" rel="noopener">RHEL5 repo</a></li>
+<li>针对RedHat6/CentOS X64，有github project做了相关的rpm包<ul>
+<li><a href="https://github.com/zabbixcn/zabbix3.0-rpm" target="_blank" rel="noopener">https://github.com/zabbixcn/zabbix3.0-rpm</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>php相关的依赖包比较多，大部分在RedHat的官方repo会有，除了<code>php_bcmath</code>和<code>php_mbstring</code>。自行搜索下载的时候注意版本，php所有相关的包都是要align在统一的小版本上的，<br>比如<code>5.3.3-46.el6_7.1</code>，如果你下载的不是一个版本的话，yum安装的时候会出现<code>Dependency Resolution</code>问题。</li>
+<li>mysql数据库用简单的mysql server就好了。曾尝试用mysql cluster，遇到不少问题。<ul>
+<li>官方的sql要求用的engine是innodb，若狗所用的mysql cluster是NDBCLUSTER做storage engine的话需要打开innodb support，才能顺利导入zabbix的schema, data …</li>
+<li>zabbix2.2 web setup的时候要测试和mysql的连接，但用mysql cluster的话死活连不过去，而且不能next去下一步。但3.0的版本只需要填数据库信息，不需要测试连接性，关键能next啊，与数据连接有问题的话后面再改配置呗。</li>
+</ul>
+</li>
+<li>zabbix dashboard显示”zabbix server is not running”<ul>
+<li>原因: blocked by SELINUX</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">shell&gt;tail -f /var/<span class="built_in">log</span>/audit/audit.log</span><br><span class="line">r:zabbix_agent_port_t:s0 tclass=tcp_socket</span><br><span class="line"><span class="built_in">type</span>=SYSCALL msg=audit(1474187313.154:2439): arch=c000003e syscall=42 success=no <span class="built_in">exit</span>=-13 a0=c a1=7f800b6ec850 a2=1c a3=ff00 items=0 ppid=2048 pid=2057 auid=500 uid=48 gid=48 euid=48 suid=48 fsuid=48 egid=48 sgid=48 fsgid=48 tty=  (none) ses=2 comm=<span class="string">"httpd"</span> exe=<span class="string">"/usr/sbin/httpd"</span> subj=unconfined_u:system_r:httpd_t:s0 key=(null)</span><br><span class="line"><span class="built_in">type</span>=AVC msg=audit(1474187313.154:2440): avc:  denied  &#123; name_connect &#125; <span class="keyword">for</span>  pid=2057 comm=<span class="string">"httpd"</span> dest=10050 scontext=unconfined_u:system_r:httpd_t:s0 tcontext=system_u:object_r:zabbix_agent_port_t:s0 tclass=tcp_socket</span><br><span class="line"></span><br><span class="line">shell&gt; /usr/sbin/getsebool -a | grep httpd</span><br><span class="line">allow_httpd_anon_write --&gt; off</span><br><span class="line">allow_httpd_mod_auth_ntlm_winbind --&gt; off</span><br><span class="line">allow_httpd_mod_auth_pam --&gt; off</span><br><span class="line">allow_httpd_sys_script_anon_write --&gt; off</span><br><span class="line">httpd_builtin_scripting --&gt; on</span><br><span class="line">httpd_can_check_spam --&gt; off</span><br><span class="line">httpd_can_network_connect --&gt; off</span><br><span class="line">httpd_can_network_connect_cobbler --&gt; off</span><br><span class="line">httpd_can_network_connect_db --&gt; off</span><br><span class="line">httpd_can_network_memcache --&gt; off</span><br><span class="line">httpd_can_network_relay --&gt; off</span><br><span class="line">httpd_can_sendmail --&gt; off</span><br><span class="line">httpd_dbus_avahi --&gt; on</span><br><span class="line">httpd_dbus_sssd --&gt; off</span><br><span class="line">httpd_enable_cgi --&gt; on</span><br><span class="line">httpd_enable_ftp_server --&gt; off</span><br><span class="line">httpd_enable_homedirs --&gt; off</span><br><span class="line">httpd_execmem --&gt; off</span><br><span class="line">httpd_manage_ipa --&gt; off</span><br><span class="line">httpd_read_user_content --&gt; off</span><br><span class="line">httpd_run_preupgrade --&gt; off</span><br><span class="line">httpd_run_stickshift --&gt; off</span><br><span class="line">httpd_serve_cobbler_files --&gt; off</span><br><span class="line">httpd_setrlimit --&gt; off</span><br><span class="line">httpd_ssi_exec --&gt; off</span><br><span class="line">httpd_tmp_exec --&gt; off</span><br><span class="line">httpd_tty_comm --&gt; on</span><br><span class="line">httpd_unified --&gt; on</span><br><span class="line">httpd_use_cifs --&gt; off</span><br><span class="line">httpd_use_fusefs --&gt; off</span><br><span class="line">httpd_use_gpg --&gt; off</span><br><span class="line">httpd_use_nfs --&gt; off</span><br><span class="line">httpd_use_openstack --&gt; off</span><br><span class="line">httpd_verify_dns --&gt; off</span><br><span class="line"></span><br><span class="line">shell&gt; setsebool -P httpd_can_connect_zabbix on   // Zabbix 3.x新增加的SE bool</span><br><span class="line">shell&gt; setsebool -P httpd_can_network_connect on  // <span class="keyword">for</span> version &lt; zabbix 3.x</span><br></pre></td></tr></table></figure>
+
+<p>  <img src="https://raw.githubusercontent.com/KasperDeng/kasperdeng.github.io/master/images/zabbix/zabbix-server-not-running.jpg" alt="zabbix-server-not-running"></p>
+<ul>
+<li>Web frontend blocked by <code>403: Permission Denied</code><ul>
+<li>check selinux<ul>
+<li>check <code>/var/log/audit/audit.log</code></li>
+<li>change <code>SELINUX=enforcing</code> to <code>SELINUX=disable</code> in <code>/etc/selinux/config</code> and reboot</li>
+<li><code>setenforce 0</code> and <code>getenforce</code> or <code>sestatus</code> to get current mode status</li>
+<li>check the security context of PHP file. The type is <code>httpd_user_content_t</code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -Z &#x2F;var&#x2F;www&#x2F;html&#x2F;zabbix</span><br></pre></td></tr></table></figure></li>
+<li>check the owernship and file mode of your PHP file content. apache needs execution permission.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul>
+<li><a href="https://codeascraft.com/2011/02/15/measure-anything-measure-everything/" target="_blank" rel="noopener">Measure Anything, Measure Everything</a></li>
+</ul>
+</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:litreily@163.com">Kasper Deng</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2016/09/19/zabbix/">http://kasperdeng.github.io/2016/09/19/zabbix/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="http://kasperdeng.github.io">Kasper Deng的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tags"></i><a href="/tags/zabbix/">zabbix</a><a href="/tags/devops/">devops</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#简介"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#安装"><span class="toc-number">2.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#configuration"><span class="toc-number">3.</span> <span class="toc-text">configuration</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#log"><span class="toc-number">4.</span> <span class="toc-text">log</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#坑"><span class="toc-number">5.</span> <span class="toc-text">坑</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">6.</span> <span class="toc-text">Reference</span></a></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="prev" href="/2016/11/12/zabbix-snmp-trap/">&lt; zabbix snmp trap</a><a class="next" href="/2015/04/15/go-dev-env/">Golang Development Environment &gt;</a></div><div id="valine-comment"><style type="text/css">.night .v[data-class=v] a { color: #0F9FB4 !important; }
+.night .v[data-class=v] a:hover { color: #216C73 !important; }
+.night .v[data-class=v] li { list-style: inherit; }
+.night .v[data-class=v] .vwrap { border: 1px solid #223441; border-radius: 0; }
+.night .v[data-class=v] .vwrap:hover { box-shadow: 0 0 6px 1px #223441; }
+.night .v[data-class=v] .vbtn { border-radius: 0; background: none; }
+.night .v[data-class=v] .vlist .vcard .vh { border-bottom-color: #293D4E; }
+.night .v[data-class=v] .vwrap .vheader .vinput { border-bottom-color: #223441; }
+.night .v[data-class=v] .vwrap .vheader .vinput:focus { border-bottom-color: #339EB4; }
+.night .v[data-class=v] code, .night .v[data-class=v] pre,.night .v[data-class=v] .vlist .vcard .vhead .vsys { background: #203240 !important; }
+.night .v[data-class=v] code, .night .v[data-class=v] pre { color: #F0F0F0; font-size: 95%; }
+.v[data-class=v] .vcards .vcard .vh {border-bottom-color: #223441; }
+.night .v[data-class=v] .vcards .vcard .vcontent.expand:before {background: linear-gradient(180deg,rgba(38,57,73,.4),rgba(38,57,73,.9));}
+.night .v[data-class=v] .vcards .vcard .vcontent.expand:after {background: rgba(38,57,73,.9)}
+</style><div id="vcomment"></div><script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script><script>var notify = 'false' == true ? true : false;
+var verify = 'false' == true ? true : false;
+var GUEST_INFO = ['nick','mail','link'];
+var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+  return GUEST_INFO.indexOf(item) > -1
+});
+guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+window.valine = new Valine({
+  el:'#vcomment',
+  notify:notify,
+  verify:verify,
+  appId:'',
+  appKey:'',
+  lang: 'zh-cn',
+  placeholder:'ヾﾉ≧∀≦)o Come on, say something...',
+  avatar:'identicon',
+  guest_info:guest_info,
+  pageSize:'10'
+})</script></div></section><footer><p>Copyright © 2016 - 2021 <a href="/." rel="nofollow">Kasper's Wiki</a> | <strong><a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></strong><br><span id="busuanzi_container_site_uv"><i class="fa fa-user"></i><span id="busuanzi_value_site_uv"></span></span> <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_site_pv"></span></span> | Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a>Theme with<a rel="nofollow" target="_blank" href="https://github.com/litreily/snark-hexo"> snark.</a></p></footer></div></div></div><script type="text/javascript" src="/plugins/prettify/prettify.js"></script><script type="text/javascript" src="/js/search.js"></script><script type="text/javascript" src="/js/top.js"></script><script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script type="text/javascript" src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.1" async></script></body></html>

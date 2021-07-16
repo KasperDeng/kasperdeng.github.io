@@ -1,0 +1,290 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><meta name="theme-color" content="#2d4356"><meta name="baidu-site-verification"><title>Golang Development Environment | Kasper's Wiki</title><link rel="stylesheet" type="text/css" href="/css/style.css"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.png"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script><meta name="generator" content="Hexo 4.2.0"></head><link rel="stylesheet" type="text/css" href="/plugins/prettify/doxy.css"><script type="text/javascript" src="/js/ready.js" async></script><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><body class="night"><div class="mobile-head" id="mobile-head"><div class="navbar-icon"><span></span><span></span><span></span></div><div class="navbar-title"><a href="/">Kasper Deng</a></div><div class="navbar-search"><!--= show a circle here--></div></div><div class="h-wrapper" id="menu"><nav class="h-head box"><div class="m-hdimg"><a class="hdimg img" href="/"><img class="nofancybox" src="/img/Turkey.png" width="128" height="128"></a><h1 class="ttl"><a href="/">Kasper's Wiki</a></h1></div><p class="m-desc">They're both convinced that a sudden passion joined them. Such certainty is beautiful, but uncertainty is more beautiful still.</p><div class="m-nav"><ul><li><span class="dot">●</span><a href="/archives/">archives</a></li><li><span class="dot">●</span><a href="/categories/">Categories</a></li><li><span class="dot">●</span><a href="/tags/">Tags</a></li><li><span class="dot">●</span><a href="/about/">About</a></li><li><span class="dot">●</span><a href="/atom.xml">RSS</a></li><li class="m-sch"><form class="form" id="j-formsch" method="get"><!--input(type="text" id="local-search-input" name="q" class="txt" value="搜索" onfocus="if(this.value=='搜索'){this.value='';}" onblur="if(this.value==''){this.value='搜索';}")--><input class="txt" type="text" id="local-search-input" name="q" value="搜索" onfocus="if(this.value=='搜索'){this.value='';}" onblur="if(this.value==''){this.value='Search';}"><input type="text" style="display:none;"></form></li></ul><div id="local-search-result"></div></div></nav></div><div id="back2Top"><a class="fa fa-arrow-up" title="Back to top" href="#"></a></div><div class="box" id="container"><div class="l-wrapper"><div class="l-content box"><div class="l-post l-post-art"><article class="p-art"><div class="p-header box"><h1 class="p-title">Golang Development Environment</h1><div class="p-info"><span class="p-date"><i class="fa fa-calendar"></i><a href="/2015/04/15/go-dev-env/">2015-04-15</a></span><span class="p-view" id="busuanzi_container_page_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_page_pv"></span></span></div></div><div class="p-content"><h1 id="Installation"><a href="#Installation" class="headerlink" title="Installation"></a>Installation</h1><ul>
+<li>Download go <ul>
+<li><a href="https://golang.org/dl/" target="_blank" rel="noopener">official</a> &amp; <a href="https://golang.org/doc/install" target="_blank" rel="noopener">Getting Started</a></li>
+<li><a href="https://golang.google.cn/dl" target="_blank" rel="noopener">china official</a></li>
+</ul>
+</li>
+<li>Go Complier: <ul>
+<li>offcial: gc</li>
+<li>GNU GC: gccgo</li>
+</ul>
+</li>
+<li>Go supports instruction sets<ol>
+<li>amd64 (a.k.a. <code>x86-64</code>); 6g,6l(Plan9 gc),6c,6a // support x84-64, naming as amd64<br> is to amd’s contribution of inventing 64bit instruction set</li>
+<li>386 (a.k.a. <code>x86</code> or <code>x86-32</code>); 8g,8l,8c(Plan9 gc),8a</li>
+<li>arm (a.k.a. ARM); 5g,5l,5c(Plan9 gc),5a. Now supports 64-bit ARM architecture on FreeBSD 12.0 or later (the freebsd/arm64 port).</li>
+<li>Experimental support for 64-bit RISC-V on Linux (GOOS=linux, GOARCH=riscv64)</li>
+</ol>
+</li>
+<li>Set Env Variables<ul>
+<li>GOBIN: C:\Go\bin (optional, if no GOBIN, GOPATH will be used)</li>
+<li>GOARCH: x86-32bit: 386, x86-64bit: amd64, ARM: amr (android)</li>
+<li>GOOS: windows</li>
+<li>GOROOT: C:\Go</li>
+<li>GOPATH: C:\GOPATH<ul>
+<li>To specify directories outside of $GOROOT that contain the source for Go projects and their binaries.</li>
+</ul>
+</li>
+<li>Add to PATH: %GOBIN%</li>
+</ul>
+</li>
+<li>Multi-Version GO Env<ul>
+<li><a href="https://github.com/moovweb/gvm" target="_blank" rel="noopener">GVM</a><ul>
+<li>An interface to manage Go versions, like NVM(Nodejs Version Manager), RVM (Ruby Version Manager).</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Reference in astaxie/build-web-application-with-golang<ul>
+<li><a href="https://github.com/astaxie/build-web-application-with-golang/blob/master/en/01.1.md" target="_blank" rel="noopener">En</a></li>
+<li><a href="https://github.com/astaxie/build-web-application-with-golang/blob/master/zh/01.1.md" target="_blank" rel="noopener">Zh</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="Tools"><a href="#Tools" class="headerlink" title="Tools"></a>Tools</h1><ul>
+<li><a href="http://dominik.honnef.co/posts/2014/12/an_incomplete_list_of_go_tools/" target="_blank" rel="noopener">Go Tools</a></li>
+<li><a href="http://go-lang.cat-v.org/dev-utils" target="_blank" rel="noopener">dev-utilies</a></li>
+<li><a href="https://github.com/jstemmer/gotags" target="_blank" rel="noopener">gotags</a></li>
+<li><a href="https://github.com/lyosha/ctags-go" target="_blank" rel="noopener">ctags-go</a></li>
+<li><a href="https://github.com/dgryski/vim-godef" target="_blank" rel="noopener">vim-godef</a></li>
+</ul>
+<h1 id="IDE"><a href="#IDE" class="headerlink" title="IDE"></a>IDE</h1><h1 id="GOPROXY"><a href="#GOPROXY" class="headerlink" title="GOPROXY"></a>GOPROXY</h1><ul>
+<li>Set to <a href="https://github.com/goproxy/goproxy.cn" target="_blank" rel="noopener">Goproxy China</a></li>
+<li>default value: <code>GOPROXY=https://proxy.golang.org,direct</code></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ go env -w GO111MODULE=on</span><br><span class="line">$ go env -w GOPROXY=https://goproxy.cn,direct</span><br></pre></td></tr></table></figure>
+
+<p>done.</p>
+<h3 id="macOS-or-Linux"><a href="#macOS-or-Linux" class="headerlink" title="macOS or Linux"></a>macOS or Linux</h3><p>Open your terminal and execute</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">export</span> GO111MODULE=on</span><br><span class="line">$ <span class="built_in">export</span> GOPROXY=https://goproxy.cn</span><br></pre></td></tr></table></figure>
+
+<p>or</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="string">"export GO111MODULE=on"</span> &gt;&gt; ~/.profile</span><br><span class="line">$ <span class="built_in">echo</span> <span class="string">"export GOPROXY=https://goproxy.cn"</span> &gt;&gt; ~/.profile</span><br><span class="line">$ <span class="built_in">source</span> ~/.profile</span><br></pre></td></tr></table></figure>
+
+<p>done.</p>
+<h3 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h3><p>Open your PowerShell and execute</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">C:\&gt; $env:GO111MODULE &#x3D; &quot;on&quot;</span><br><span class="line">C:\&gt; $env:GOPROXY &#x3D; &quot;https:&#x2F;&#x2F;goproxy.cn&quot;</span><br></pre></td></tr></table></figure>
+
+<h1 id="gopls"><a href="#gopls" class="headerlink" title="gopls"></a><a href="https://github.com/golang/tools/tree/master/gopls" target="_blank" rel="noopener">gopls</a></h1><ul>
+<li>It is widely used in vscode, vim/neovim for golang IDE.<ul>
+<li>gopls (pronounced: “go please”) is the official language server for the Go language.</li>
+<li>It is currently in alpha, so it is not stable. Aiming stable in the first half of 2020.</li>
+</ul>
+</li>
+<li>Installation<ul>
+<li>By vscode or vim-go</li>
+<li>Manually<ul>
+<li>Set GOPROXY in above steps.</li>
+<li><code>go get golang.org/x/tools/gopls@latest</code>, note, don’t use <code>-u</code> option to keep it compatible. </li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Problems of gopls<ul>
+<li>slow in searching implemenations of interface, callers and callees.</li>
+<li>CPU and memory consuming (2G ~ 4G).</li>
+</ul>
+</li>
+</ul>
+<h2 id="Vscode-insiders"><a href="#Vscode-insiders" class="headerlink" title="Vscode/insiders"></a>Vscode/insiders</h2><ul>
+<li>Install Go plugin with tools (gopls, godef, gorename…)<ul>
+<li>command palette: “Go:install/update tools”</li>
+</ul>
+</li>
+<li>Setup Configuration</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">"go.autocompleteUnimportedPackages": true,</span><br><span class="line">"go.inferGopath": true,</span><br><span class="line">"go.gopath": "C:\\GOPATH",</span><br><span class="line">"go.goroot": "C:\\Go",</span><br><span class="line">"go.testFlags": ["-v"],</span><br><span class="line">"go.testOnSave": true,</span><br><span class="line">"go.toolsGopath": "C:\\Go",</span><br><span class="line">"go.formatTool": "goimports",</span><br><span class="line">"go.useLanguageServer": true</span><br></pre></td></tr></table></figure>
+
+<h2 id="Vim"><a href="#Vim" class="headerlink" title="Vim"></a>Vim</h2><ul>
+<li><a href="https://github.com/fatih/vim-go" target="_blank" rel="noopener">vim-go</a><ul>
+<li>PluginInstall<ul>
+<li>Plug: Plug ‘fatih/vim-go’, { ‘do’: ‘:GoUpdateBinaries’ }</li>
+<li>Vundle: Plugin ‘fatih/vim-go’</li>
+</ul>
+</li>
+<li>GoInstallBinaries/GoUpdateBinaries</li>
+<li><del>Install ctags: e.g. In Ubuntu, sudo apt-get install ctags and in /usr/bin/ctags</del></li>
+<li><del>Config the ctags path for tagbar: let g:tagbar_ctags_bin = ‘/usr/bin/ctags’ (Ubuntu)</del></li>
+</ul>
+</li>
+<li><a href="https://github.com/fatih/vim-go/wiki/Tutorial" target="_blank" rel="noopener">Tutorial</a><ul>
+<li>GoGuruScope</li>
+</ul>
+</li>
+<li>Configurations</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">let g:go_auto_type_info &#x3D; 1</span><br><span class="line">let g:go_auto_sameids &#x3D; 1</span><br><span class="line">&quot;let g:go_debug &#x3D; [&#39;lsp&#39;]</span><br><span class="line">&quot;let g:go_gopls_enabled &#x3D; 0</span><br><span class="line">&quot;let g:go_def_mode &#x3D; &#39;guru&#39;</span><br><span class="line">&quot;let g:go_referrers_mode &#x3D; &#39;guru&#39;</span><br><span class="line">&quot;let g:go_info_mode &#x3D; &#39;guru&#39; &quot;default is gopls</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>Useful Commands</p>
+<ul>
+<li>gd/CTRL-]: GoDef</li>
+<li>CTRL-o</li>
+<li>:GoReferrers</li>
+<li>:GoDescribe</li>
+<li>:GoImplementes</li>
+<li>:GoChannelPeers</li>
+<li>:GoCallees</li>
+<li>:GoCallers</li>
+<li>:GoGuruScope</li>
+<li>:GoInfo</li>
+<li>:GoSameIds/:GoSameIdsClear</li>
+</ul>
+</li>
+<li><p><del>Add key mapping to .vimrc, e.g. <code>au FileType go nmap gdf &lt;plug&gt;(go-def)</code></del></p>
+</li>
+<li><p>Vim build-in <code>&lt;C-o&gt;</code> and <code>&lt;C-i&gt;</code> help back/forward of code definition naviation.</p>
+</li>
+<li><p><code>&lt;C-x&gt;&lt;C-o&gt;</code> auto go code complete by omnicomplete system, <code>&lt;C-n&gt;</code> to select.</p>
+<ul>
+<li>Add config to vimrc to support invoke gocode for code completion  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> &quot; Golang</span><br><span class="line">au BufNewFile,BufRead *.go setf go</span><br><span class="line">autocmd FileType go setlocal omnifunc&#x3D;go#complete#Complete</span><br></pre></td></tr></table></figure>
+<ul>
+<li>autocompletion is based on the <code>gocode</code>, when golang upgrade, please upgrade the gocode by <code>go get -u github.com/nsf/gocode</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><a href="https://github.com/Valloric/YouCompleteMe" target="_blank" rel="noopener">YouCompleteMe</a> (Code-completion for Vim, but no official support on Windows)</p>
+</li>
+<li><p>References</p>
+<ul>
+<li><a href="http://tonybai.com/2014/11/07/golang-development-environment-for-vim/" target="_blank" rel="noopener">http://tonybai.com/2014/11/07/golang-development-environment-for-vim/</a></li>
+<li><a href="http://obahua.com/setup-vim-for-go-development/" target="_blank" rel="noopener">http://obahua.com/setup-vim-for-go-development/</a></li>
+<li><a href="https://coderwall.com/p/-t_5zw/golang-all-known-implementations-of-an-interface-in-vim" target="_blank" rel="noopener">Golang - All Known Implementations of An Interface In VIM</a></li>
+<li><a href="http://stackoverflow.com/questions/27860178/how-to-rebuild-godef-to-work-with-go-1-4" target="_blank" rel="noopener">godef issue in go v1.4</a></li>
+<li>Need to update the <a href="http://code.google.com/p/rog-go/source/browse/exp/cmd/godef/godef.go" target="_blank" rel="noopener">godef</a> and build it by self </li>
+</ul>
+</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">" Golang</span><br><span class="line">au BufNewFile,BufRead *.go setf go</span><br><span class="line">autocmd FileType go setlocal omnifunc=go#complete#Complete</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>If no config, use the gvim-ex which support it by default (unknown why)</li>
+<li>autocompletion is dependent on the <code>gocode</code>, when golang upgrade, please upgrade the gocode by <code>go get -u github.com/nsf/gocode</code></li>
+</ul>
+<ul>
+<li><p><a href="https://github.com/Valloric/YouCompleteMe" target="_blank" rel="noopener">YouCompleteMe</a> (Code-completion for Vim, but no official support on Windows)</p>
+</li>
+<li><p>Supports in cygwin vim, using imported env variable from Windows. Currently found godef has limitation in cygwin to browse the code definition in $GOPATH/src(config problem?)</p>
+</li>
+<li><p><a href="http://stackoverflow.com/questions/27860178/how-to-rebuild-godef-to-work-with-go-1-4" target="_blank" rel="noopener">godef issue in go v1.4</a></p>
+<ul>
+<li>Need to update the <a href="http://code.google.com/p/rog-go/source/browse/exp/cmd/godef/godef.go" target="_blank" rel="noopener">godef</a> and build it by self</li>
+</ul>
+</li>
+</ul>
+<h2 id="Gogland"><a href="#Gogland" class="headerlink" title="Gogland"></a><a href="https://www.jetbrains.com/go/" target="_blank" rel="noopener">Gogland</a></h2><ul>
+<li>JetBrains GO IDE<ul>
+<li>Disable parameter name hint (Editor -&gt; General -&gt; Appearance)</li>
+</ul>
+</li>
+</ul>
+<h2 id="sublime"><a href="#sublime" class="headerlink" title="sublime"></a>sublime</h2><ul>
+<li>Install package control<ul>
+<li>“ctrl + `“ or Menu: View -&gt; Show console: input</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import urllib.request,os; pf = <span class="string">'Package Control.sublime-package'</span>; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); open(os.path.join(ipp, pf), <span class="string">'wb'</span>).write(urllib.request.urlopen( <span class="string">'http://sublime.wbond.net/'</span> + pf.replace(<span class="string">' '</span>,<span class="string">'%20'</span>)).<span class="built_in">read</span>())</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Restart sublime</li>
+</ul>
+<ul>
+<li>Install GoSublime<ul>
+<li>ctrl+shift+p -&gt; input install<cr> -&gt; input GoSublime <cr></li>
+<li>preferences —&gt; package setting —&gt; gosublime —&gt; setting default, update <strong>env</strong></li>
+<li>Restart sublime</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"env"</span>: &#123;</span><br><span class="line">            <span class="attr">"path"</span>:<span class="string">"C:\\Go\\bin"</span>,</span><br><span class="line">            <span class="attr">"GOROOT"</span>:<span class="string">"C:\\Go"</span>,</span><br><span class="line">            <span class="attr">"GOPATH"</span>:<span class="string">"C:\\GOPATH"</span>,</span><br><span class="line">            <span class="attr">"GOARCH"</span>:<span class="string">"amd64"</span>,</span><br><span class="line">            <span class="attr">"GOOS"</span>:<span class="string">"windows"</span>,</span><br><span class="line">            <span class="attr">"PATH"</span>:<span class="string">"%GOBIN%;%PATH%"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"comp_lint_enabled"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">"comp_lint_commands"</span>: [</span><br><span class="line">        &#123;<span class="attr">"cmd"</span>: [<span class="string">"go"</span>, <span class="string">"install"</span>]&#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">"on_save"</span>: [</span><br><span class="line">        &#123;<span class="attr">"cmd"</span>:<span class="string">"gs_comp_lint"</span>&#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>ctrl+p -&gt; gosublime</code>: to find related gosublime functions and key binding</p>
+</li>
+<li><p>keybinds: ctrl+.,ctrl+g: definition</p>
+</li>
+<li><p>Build</p>
+<ul>
+<li>ctrl+b (cli console in sublime), then run the go commands</li>
+</ul>
+</li>
+<li><p><strong>gosublime drawback</strong>: read code with goto definition but no easy way to go back.</p>
+</li>
+<li><p>Ref: </p>
+<ul>
+<li><a href="http://www.v-lover.com/2014/12/24/go-built-environment/" target="_blank" rel="noopener">http://www.v-lover.com/2014/12/24/go-built-environment/</a></li>
+<li><a href="http://blog.buaa.us/godef-plugin-for-sublime-released/" target="_blank" rel="noopener">Godef for Sublime</a> (currently not support windows)</li>
+</ul>
+</li>
+</ul>
+<h2 id="Atom"><a href="#Atom" class="headerlink" title="Atom"></a>Atom</h2><ul>
+<li>Lots of golang package support<ul>
+<li>go-plus (but currently failed to install in my workspace)</li>
+</ul>
+</li>
+</ul>
+<h2 id="Notepad"><a href="#Notepad" class="headerlink" title="Notepad++"></a>Notepad++</h2><ul>
+<li>Gonpp</li>
+</ul>
+<h2 id="intellij"><a href="#intellij" class="headerlink" title="intellij"></a>intellij</h2><ul>
+<li>Ref: <a href="http://www.cnblogs.com/clivelee/p/3870186.html" target="_blank" rel="noopener">http://www.cnblogs.com/clivelee/p/3870186.html</a></li>
+<li><a href="http://github.com/go-lang-plugin-org/go-lang-idea-plugin" target="_blank" rel="noopener">golang plugin</a></li>
+<li>Setup Go project SDK</li>
+</ul>
+<h2 id="Gogland-1"><a href="#Gogland-1" class="headerlink" title="Gogland"></a>Gogland</h2><blockquote>
+<p><a href="https://www.jetbrains.com/go/" target="_blank" rel="noopener">JetBrains</a>, commercial IDE, extends the IntelliJ platform</p>
+</blockquote>
+<ul>
+<li>Not formal release yet. Can download an early build for trial</li>
+</ul>
+<h2 id="Eclipse"><a href="#Eclipse" class="headerlink" title="Eclipse"></a>Eclipse</h2><ul>
+<li>Goclipse</li>
+</ul>
+<h2 id="Wide"><a href="#Wide" class="headerlink" title="Wide"></a>Wide</h2><ul>
+<li><a href="https://wide.b3log.org" target="_blank" rel="noopener">Coding with Go on the Wide way</a></li>
+</ul>
+<h2 id="Zeus-IDE"><a href="#Zeus-IDE" class="headerlink" title="Zeus IDE"></a><a href="http://www.zeusedit.com/go.html" target="_blank" rel="noopener">Zeus IDE</a></h2><ul>
+<li>TBD</li>
+</ul>
+<h2 id="LiteIDE"><a href="#LiteIDE" class="headerlink" title="LiteIDE"></a><a href="https://github.com/visualfc/liteide" target="_blank" rel="noopener">LiteIDE</a></h2><blockquote>
+<p>LiteIDE is a simple, open source, cross-platform Go IDE. Based on Qt5/Qt4</p>
+</blockquote>
+<ul>
+<li>easy installation and usage</li>
+<li>based on Qt, gui is not fashion style</li>
+</ul>
+</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:litreily@163.com">Kasper Deng</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2015/04/15/go-dev-env/">http://kasperdeng.github.io/2015/04/15/go-dev-env/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="http://kasperdeng.github.io">Kasper Deng的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/Golang-IDE/">Golang IDE</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Installation"><span class="toc-number">1.</span> <span class="toc-text">Installation</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Tools"><span class="toc-number">2.</span> <span class="toc-text">Tools</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#IDE"><span class="toc-number">3.</span> <span class="toc-text">IDE</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#GOPROXY"><span class="toc-number">4.</span> <span class="toc-text">GOPROXY</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#macOS-or-Linux"><span class="toc-number">4.0.1.</span> <span class="toc-text">macOS or Linux</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Windows"><span class="toc-number">4.0.2.</span> <span class="toc-text">Windows</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#gopls"><span class="toc-number">5.</span> <span class="toc-text">gopls</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Vscode-insiders"><span class="toc-number">5.1.</span> <span class="toc-text">Vscode&#x2F;insiders</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vim"><span class="toc-number">5.2.</span> <span class="toc-text">Vim</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gogland"><span class="toc-number">5.3.</span> <span class="toc-text">Gogland</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sublime"><span class="toc-number">5.4.</span> <span class="toc-text">sublime</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Atom"><span class="toc-number">5.5.</span> <span class="toc-text">Atom</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Notepad"><span class="toc-number">5.6.</span> <span class="toc-text">Notepad++</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#intellij"><span class="toc-number">5.7.</span> <span class="toc-text">intellij</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gogland-1"><span class="toc-number">5.8.</span> <span class="toc-text">Gogland</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Eclipse"><span class="toc-number">5.9.</span> <span class="toc-text">Eclipse</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Wide"><span class="toc-number">5.10.</span> <span class="toc-text">Wide</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Zeus-IDE"><span class="toc-number">5.11.</span> <span class="toc-text">Zeus IDE</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LiteIDE"><span class="toc-number">5.12.</span> <span class="toc-text">LiteIDE</span></a></li></ol></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="prev" href="/2016/09/19/zabbix/">&lt; zabbix</a><a class="next" href="/2015/02/15/GoCommands/">go commands &gt;</a></div><div id="valine-comment"><style type="text/css">.night .v[data-class=v] a { color: #0F9FB4 !important; }
+.night .v[data-class=v] a:hover { color: #216C73 !important; }
+.night .v[data-class=v] li { list-style: inherit; }
+.night .v[data-class=v] .vwrap { border: 1px solid #223441; border-radius: 0; }
+.night .v[data-class=v] .vwrap:hover { box-shadow: 0 0 6px 1px #223441; }
+.night .v[data-class=v] .vbtn { border-radius: 0; background: none; }
+.night .v[data-class=v] .vlist .vcard .vh { border-bottom-color: #293D4E; }
+.night .v[data-class=v] .vwrap .vheader .vinput { border-bottom-color: #223441; }
+.night .v[data-class=v] .vwrap .vheader .vinput:focus { border-bottom-color: #339EB4; }
+.night .v[data-class=v] code, .night .v[data-class=v] pre,.night .v[data-class=v] .vlist .vcard .vhead .vsys { background: #203240 !important; }
+.night .v[data-class=v] code, .night .v[data-class=v] pre { color: #F0F0F0; font-size: 95%; }
+.v[data-class=v] .vcards .vcard .vh {border-bottom-color: #223441; }
+.night .v[data-class=v] .vcards .vcard .vcontent.expand:before {background: linear-gradient(180deg,rgba(38,57,73,.4),rgba(38,57,73,.9));}
+.night .v[data-class=v] .vcards .vcard .vcontent.expand:after {background: rgba(38,57,73,.9)}
+</style><div id="vcomment"></div><script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script><script>var notify = 'false' == true ? true : false;
+var verify = 'false' == true ? true : false;
+var GUEST_INFO = ['nick','mail','link'];
+var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+  return GUEST_INFO.indexOf(item) > -1
+});
+guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+window.valine = new Valine({
+  el:'#vcomment',
+  notify:notify,
+  verify:verify,
+  appId:'',
+  appKey:'',
+  lang: 'zh-cn',
+  placeholder:'ヾﾉ≧∀≦)o Come on, say something...',
+  avatar:'identicon',
+  guest_info:guest_info,
+  pageSize:'10'
+})</script></div></section><footer><p>Copyright © 2016 - 2021 <a href="/." rel="nofollow">Kasper's Wiki</a> | <strong><a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></strong><br><span id="busuanzi_container_site_uv"><i class="fa fa-user"></i><span id="busuanzi_value_site_uv"></span></span> <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_site_pv"></span></span> | Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a>Theme with<a rel="nofollow" target="_blank" href="https://github.com/litreily/snark-hexo"> snark.</a></p></footer></div></div></div><script type="text/javascript" src="/plugins/prettify/prettify.js"></script><script type="text/javascript" src="/js/search.js"></script><script type="text/javascript" src="/js/top.js"></script><script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script type="text/javascript" src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.1" async></script></body></html>
